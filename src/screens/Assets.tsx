@@ -1,12 +1,14 @@
-import React from 'react';
-import {Text} from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import React from "react";
+import { Text, StyleSheet, View } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {},
+});
 
 export function Assets() {
   return (
-    <Text>
-      <MaterialCommunityIcons name="archive-outline" size={25} />
-      Assets
-    </Text>
+    <View style={styles.container}>
+      <Text>Assets</Text>
+    </View>
   );
 }

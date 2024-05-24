@@ -19,6 +19,8 @@ import {
   adaptNavigationTheme,
 } from "react-native-paper";
 import merge from "deepmerge";
+import { SearchFilterHeader } from "./SearchFilterHeader";
+import MarginLayout from "./MarginLayout";
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -30,8 +32,14 @@ const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
 
 const Tab = createBottomTabNavigator();
 
+const WrappedAssets = MarginLayout(Assets);
+const WrappedEmployees = MarginLayout(Employees);
+const WrappedSettings = MarginLayout(Settings);
+const WrappedLocations = MarginLayout(Locations);
+const WrappedInventoryLists = MarginLayout(InventoryLists);
+
 export function Main() {
-  const loadData = useCallback(async () => {
+  const initDatabase = useCallback(async () => {
     try {
       const db = await connectToDatabase();
       await createTables(db);
@@ -41,10 +49,8 @@ export function Main() {
   }, []);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  const theme = useTheme();
+    initDatabase();
+  }, [initDatabase]);
 
   return (
     <NavigationContainer theme={CombinedDefaultTheme}>
@@ -54,7 +60,7 @@ export function Main() {
       >
         <Tab.Screen
           name="Assets"
-          component={Assets}
+          component={WrappedAssets}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -63,11 +69,12 @@ export function Main() {
                 size={size}
               />
             ),
+            headerRight: () => <SearchFilterHeader />,
           }}
         />
         <Tab.Screen
           name="Employees"
-          component={Employees}
+          component={WrappedEmployees}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -80,7 +87,7 @@ export function Main() {
         />
         <Tab.Screen
           name="Settings"
-          component={Settings}
+          component={WrappedSettings}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -93,7 +100,7 @@ export function Main() {
         />
         <Tab.Screen
           name="Locations"
-          component={Locations}
+          component={WrappedLocations}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -106,7 +113,7 @@ export function Main() {
         />
         <Tab.Screen
           name="Inventory"
-          component={InventoryLists}
+          component={WrappedInventoryLists}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
