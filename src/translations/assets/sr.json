@@ -18,5 +18,6 @@
   "startDateRequired": "Početak rada je obavezan",
   "areYouSure": "Jeste li sigurni?",
   "yes": "Da",
-  "no": "Ne"
+  "no": "Ne",
+  "searchByName": "Pretraga po imenu"
 }

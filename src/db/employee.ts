@@ -13,6 +13,14 @@ export const getEmployees = async (): Promise<Employee[]> => {
   return allRows;
 };
 
+export const getEmployeesByName = async (name: string): Promise<Employee[]> => {
+  const allRows: Employee[] = await db.getAllAsync(
+    "SELECT * FROM employee WHERE LOWER(name) LIKE LOWER('%' || ? || '%');",
+    [name]
+  );
+  return allRows;
+};
+
 export const updateEmployee = async (employee: Employee): Promise<void> => {
   await db.runAsync(
     "UPDATE employee SET name = ?, role = ?, start_date = ? WHERE id = ?;",

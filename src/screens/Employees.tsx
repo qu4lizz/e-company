@@ -7,11 +7,11 @@ import {
   Dimensions,
 } from "react-native";
 import { Employee as EmployeeType } from "../types/Employee";
-import { getEmployees } from "../db/employee";
+import { getEmployees, getEmployeesByName } from "../db/employee";
 import { Employee } from "../components/Employee";
 import { useRoute } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
-import { Modal, Portal, useTheme } from "react-native-paper";
+import { Modal, Portal, Searchbar, useTheme } from "react-native-paper";
 import { CreateNewEmployee } from "../components/CreateNewEmployee";
 import { useTranslation } from "react-i18next";
 import { setHeader } from "../reducers/headerSlice";
@@ -29,15 +29,22 @@ const styles = StyleSheet.create({
 
 export function Employees() {
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   useEffect(() => {
     reload();
-  }, []);
+  }, [searchQuery]);
 
   const reload = () => {
-    getEmployees().then((res) => {
-      setEmployees(res);
-    });
+    if (searchQuery.length > 0) {
+      getEmployeesByName(searchQuery).then((res) => {
+        setEmployees(res);
+      });
+    } else {
+      getEmployees().then((res) => {
+        setEmployees(res);
+      });
+    }
   };
 
   const { t } = useTranslation("home");
@@ -46,13 +53,14 @@ export function Employees() {
   const states = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();
 
+  useEffect(() => {});
+
   return (
     <View style={styles.container}>
       <Portal>
         <Modal
           visible={
-            route.name === t("employees") &&
-            (states.filter || states.add || states.search)
+            route.name === t("employees") && (states.filter || states.add)
           }
           onDismiss={async () => dispatch(await setHeader("falsifyAll"))}
           contentContainerStyle={{
@@ -69,6 +77,14 @@ export function Employees() {
           </View>
         </Modal>
       </Portal>
+      {route.name === t("employees") && states.search && (
+        <Searchbar
+          style={{ margin: 10 }}
+          placeholder={t("searchByName")}
+          onChangeText={setSearchQuery}
+          value={searchQuery}
+        />
+      )}
       <FlatList
         style={{ width: "100%" }}
         ItemSeparatorComponent={ItemSeparator}

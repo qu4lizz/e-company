@@ -18,5 +18,6 @@
   "startDateRequired": "Start date is required",
   "areYouSure": "Are you sure?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "searchByName": "Search by name"
 }
