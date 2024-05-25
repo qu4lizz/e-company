@@ -5,9 +5,10 @@ import { StyleSheet, View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import * as yup from "yup";
 import { DatePickerInput } from "react-native-paper-dates";
-import { createEmployee } from "../db/employee";
+import { createEmployee, updateEmployee } from "../db/employee";
 import { useAppDispatch } from "../reducers/store";
 import { setHeader } from "../reducers/headerSlice";
+import { Employee } from "../types/Employee";
 
 const styles = StyleSheet.create({
   container: {
@@ -29,11 +30,15 @@ const styles = StyleSheet.create({
 
 interface Props {
   reload: () => void;
+  employee?: Employee;
+  setEdit?: any;
 }
 
-export function CreateNewEmployee({ reload }: Props) {
+export function CreateNewEmployee({ reload, employee, setEdit }: Props) {
   const { t } = useTranslation("home");
   const dispatch = useAppDispatch();
+
+  const editing = employee ? true : false;
 
   const validationSchema = yup.object().shape({
     name: yup.string().required(t("nameAndSurnameRequired")),
@@ -47,24 +52,41 @@ export function CreateNewEmployee({ reload }: Props) {
 
     const date = new Date(form.values.start_date!).toISOString();
 
-    createEmployee({
-      name: form.values.name,
-      role: form.values.role,
-      start_date: date,
-    })
-      .then(async () => {
-        dispatch(await setHeader("falsifyAll"));
-        reload();
+    if (editing) {
+      updateEmployee({
+        id: employee!.id,
+        name: form.values.name,
+        role: form.values.role,
+        start_date: date,
       })
-      .finally(() => setLoading(false));
+        .then(async () => {
+          setEdit(false);
+          reload();
+        })
+        .finally(() => setLoading(false));
+      return;
+    } else {
+      createEmployee({
+        name: form.values.name,
+        role: form.values.role,
+        start_date: date,
+      })
+        .then(async () => {
+          dispatch(await setHeader("falsifyAll"));
+          reload();
+        })
+        .finally(() => setLoading(false));
+    }
+  };
+
+  const initialValues = {
+    name: editing ? employee!.name : "",
+    role: editing ? employee!.role : "",
+    start_date: editing ? new Date(employee!.start_date) : undefined,
   };
 
   const form = useFormik({
-    initialValues: {
-      name: "",
-      role: "",
-      start_date: undefined,
-    },
+    initialValues,
     validationSchema,
     onSubmit,
   });
@@ -119,7 +141,7 @@ export function CreateNewEmployee({ reload }: Props) {
         onPress={() => form.handleSubmit()}
         loading={loading}
       >
-        {t("create")}
+        {editing ? t("edit") : t("create")}
       </Button>
     </View>
   );

@@ -1,9 +1,13 @@
-import { Text, useTheme } from "react-native-paper";
+import { Modal, Portal, Text, useTheme } from "react-native-paper";
 import { Employee as EmployeeType } from "../types/Employee";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../utils/utils";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useState } from "react";
+import { CreateNewEmployee } from "./CreateNewEmployee";
+import { AreYouSure } from "./AreYouSure";
+import { deleteEmployee } from "../db/employee";
 
 const styles = StyleSheet.create({
   textFormat: {
@@ -29,11 +33,24 @@ const styles = StyleSheet.create({
 
 interface EmployeeProps {
   employee: EmployeeType;
+  reload: () => void;
 }
 
-export function Employee({ employee }: EmployeeProps) {
+export function Employee({ employee, reload }: EmployeeProps) {
   const { t } = useTranslation("home");
   const theme = useTheme();
+
+  const [isEditing, setEdit] = useState(false);
+  const [isDeleting, setDelete] = useState(false);
+
+  const onDelete = () => {
+    deleteEmployee(employee.id!).then(() => setDelete(false));
+    reload();
+  };
+
+  const onDeleteCancel = () => {
+    setDelete(false);
+  };
 
   return (
     <View
@@ -42,6 +59,36 @@ export function Employee({ employee }: EmployeeProps) {
         { backgroundColor: theme.colors.primaryContainer },
       ]}
     >
+      <Portal>
+        <Modal
+          visible={isEditing || isDeleting}
+          onDismiss={() => {
+            setEdit(false);
+            setDelete(false);
+          }}
+          contentContainerStyle={{
+            backgroundColor: theme.colors.background,
+            padding: 20,
+            width: "85%",
+            alignSelf: "center",
+          }}
+        >
+          <View>
+            <ScrollView>
+              {isEditing && (
+                <CreateNewEmployee
+                  reload={reload}
+                  employee={employee}
+                  setEdit={setEdit}
+                />
+              )}
+              {isDeleting && (
+                <AreYouSure onDelete={onDelete} onCancel={onDeleteCancel} />
+              )}
+            </ScrollView>
+          </View>
+        </Modal>
+      </Portal>
       <View style={[styles.textFormat, { width: "30%" }]}>
         <Text variant="bodyMedium">{t("nameAndSurname")}</Text>
         <Text variant="titleMedium">{employee.name}</Text>
@@ -64,6 +111,7 @@ export function Employee({ employee }: EmployeeProps) {
             borderWidth: 2,
             padding: 5,
           }}
+          onPress={() => setEdit(true)}
         >
           <MaterialCommunityIcons
             name="pencil-outline"
@@ -78,6 +126,7 @@ export function Employee({ employee }: EmployeeProps) {
             borderWidth: 2,
             padding: 5,
           }}
+          onPress={() => setDelete(true)}
         >
           <MaterialCommunityIcons
             name="trash-can-outline"

@@ -73,7 +73,7 @@ export function Employees() {
         style={{ width: "100%" }}
         ItemSeparatorComponent={ItemSeparator}
         data={employees}
-        renderItem={({ item }) => <Employee employee={item} />}
+        renderItem={({ item }) => <Employee employee={item} reload={reload} />}
       />
     </View>
   );

@@ -10,7 +10,13 @@
   "startDate": "Početak rada",
   "createNewEmployee": "Kreiraj novog zaposlenog",
   "create": "Kreiraj",
+  "edit": "Izmijeni",
+  "delete": "Izbriši",
+  "cancel": "Otkaži",
   "nameAndSurnameRequired": "Ime i prezime su obavezni",
   "roleRequired": "Pozicija je obavezna",
-  "startDateRequired": "Početak rada je obavezan"
+  "startDateRequired": "Početak rada je obavezan",
+  "areYouSure": "Jeste li sigurni?",
+  "yes": "Da",
+  "no": "Ne"
 }

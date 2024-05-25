@@ -10,7 +10,13 @@
   "startDate": "Started Working",
   "createNewEmployee": "Create New Employee",
   "create": "Create",
+  "edit": "Edit",
+  "delete": "Delete",
+  "cancel": "Cancel",
   "nameAndSurnameRequired": "Name and Surname are required",
   "roleRequired": "Role is required",
-  "startDateRequired": "Start date is required"
+  "startDateRequired": "Start date is required",
+  "areYouSure": "Are you sure?",
+  "yes": "Yes",
+  "no": "No"
 }
