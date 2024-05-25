@@ -9,24 +9,7 @@ import { createEmployee, updateEmployee } from "../db/employee";
 import { useAppDispatch } from "../reducers/store";
 import { setHeader } from "../reducers/headerSlice";
 import { Employee } from "../types/Employee";
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 20,
-    width: "100%",
-  },
-  inputView: {
-    width: "90%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+import { createNewStyles as styles } from "../styles/styles";
 
 interface Props {
   reload: () => void;

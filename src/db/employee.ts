@@ -21,6 +21,19 @@ export const getEmployeesByName = async (name: string): Promise<Employee[]> => {
   return allRows;
 };
 
+export const getEmployeesByStartedDate = async (
+  isBefore: boolean,
+  date: Date
+): Promise<Employee[]> => {
+  const allRows: Employee[] = await db.getAllAsync(
+    "SELECT * FROM employee WHERE start_date " +
+      (isBefore ? "<" : ">=") +
+      " ?;",
+    [date.toISOString()]
+  );
+  return allRows;
+};
+
 export const updateEmployee = async (employee: Employee): Promise<void> => {
   await db.runAsync(
     "UPDATE employee SET name = ?, role = ?, start_date = ? WHERE id = ?;",

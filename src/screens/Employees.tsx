@@ -16,6 +16,7 @@ import { CreateNewEmployee } from "../components/CreateNewEmployee";
 import { useTranslation } from "react-i18next";
 import { setHeader } from "../reducers/headerSlice";
 import { ItemSeparator } from "../components/ItemSeparator";
+import { FilterEmployees } from "../components/FilterEmployees";
 
 const styles = StyleSheet.create({
   container: {
@@ -47,13 +48,16 @@ export function Employees() {
     }
   };
 
+  const reloadByFilter = async (employees: EmployeeType[]) => {
+    setEmployees(employees);
+    dispatch(await setHeader("falsifyAll"));
+  };
+
   const { t } = useTranslation("home");
   const theme = useTheme();
   const route = useRoute();
   const states = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {});
 
   return (
     <View style={styles.container}>
@@ -73,6 +77,9 @@ export function Employees() {
           <View>
             <ScrollView>
               {states.add && <CreateNewEmployee reload={reload} />}
+              {states.filter && (
+                <FilterEmployees setEmployees={reloadByFilter} />
+              )}
             </ScrollView>
           </View>
         </Modal>
@@ -83,6 +90,10 @@ export function Employees() {
           placeholder={t("searchByName")}
           onChangeText={setSearchQuery}
           value={searchQuery}
+          onClearIconPress={async () => {
+            setSearchQuery("");
+            dispatch(await setHeader("falsifyAll"));
+          }}
         />
       )}
       <FlatList

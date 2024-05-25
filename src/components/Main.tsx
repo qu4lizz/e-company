@@ -13,11 +13,14 @@ import { SearchFilterHeader } from "./SearchFilterHeader";
 import { useTranslation } from "react-i18next";
 import { registerTranslation, enGB } from "react-native-paper-dates";
 import { CombinedDefaultTheme } from "../themes";
+import { useAppDispatch } from "../reducers/store";
+import { setHeader } from "../reducers/headerSlice";
 
 const Tab = createBottomTabNavigator();
 
 export function Main() {
   const { t } = useTranslation("home");
+  const dispatch = useAppDispatch();
 
   const initDatabase = useCallback(async () => {
     try {
@@ -37,6 +40,11 @@ export function Main() {
       <Tab.Navigator
         initialRouteName={t("assets")}
         screenOptions={{ tabBarShowLabel: false }}
+        screenListeners={{
+          tabPress: async () => {
+            dispatch(await setHeader("falsifyAll"));
+          },
+        }}
       >
         <Tab.Screen
           name={t("assets")}

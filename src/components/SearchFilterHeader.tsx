@@ -1,9 +1,8 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useTheme } from "react-native-paper";
-import { useAppDispatch, useAppSelector } from "../reducers/store";
+import { useAppDispatch } from "../reducers/store";
 import { setHeader } from "../reducers/headerSlice";
-import { useEffect } from "react";
 
 const styles = StyleSheet.create({
   container: {

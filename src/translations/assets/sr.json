@@ -19,5 +19,10 @@
   "areYouSure": "Jeste li sigurni?",
   "yes": "Da",
   "no": "Ne",
-  "searchByName": "Pretraga po imenu"
+  "searchByName": "Pretraga po imenu",
+  "filterEmployees": "Filter zaposlenih",
+  "before": "Prije",
+  "after": "Poslije",
+  "dateOfEmployment": "Datum zaposlenja",
+  "filter": "Filtriraj"
 }

@@ -19,5 +19,10 @@
   "areYouSure": "Are you sure?",
   "yes": "Yes",
   "no": "No",
-  "searchByName": "Search by name"
+  "searchByName": "Search by name",
+  "filterEmployees": "Filter Employees",
+  "before": "Before",
+  "after": "After",
+  "dateOfEmployment": "Date of Employment",
+  "filter": "Filter"
 }
