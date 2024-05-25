@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createTables } from "../db/db";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Assets } from "../screens/Assets";
@@ -8,27 +8,11 @@ import { Settings } from "../screens/Settings";
 import { Locations } from "../screens/Locations";
 import { InventoryLists } from "../screens/InventoryLists";
 import { db } from "../db/db";
-import {
-  NavigationContainer as NavigationContainer,
-  DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationDefaultTheme,
-} from "@react-navigation/native";
-import {
-  MD3DarkTheme,
-  MD3LightTheme,
-  adaptNavigationTheme,
-} from "react-native-paper";
-import merge from "deepmerge";
+import { NavigationContainer as NavigationContainer } from "@react-navigation/native";
 import { SearchFilterHeader } from "./SearchFilterHeader";
 import { useTranslation } from "react-i18next";
-
-const { LightTheme, DarkTheme } = adaptNavigationTheme({
-  reactNavigationLight: NavigationDefaultTheme,
-  reactNavigationDark: NavigationDarkTheme,
-});
-
-const CombinedDefaultTheme = merge(MD3LightTheme, LightTheme);
-const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
+import { registerTranslation, enGB } from "react-native-paper-dates";
+import { CombinedDefaultTheme } from "../themes";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,6 +29,7 @@ export function Main() {
 
   useEffect(() => {
     initDatabase();
+    registerTranslation("en-GB", enGB);
   }, [initDatabase]);
 
   return (

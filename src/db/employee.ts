@@ -16,7 +16,7 @@ export const getEmployees = async (): Promise<Employee[]> => {
 export const updateEmployee = async (employee: Employee): Promise<void> => {
   await db.runAsync(
     "UPDATE employee SET name = ?, role = ?, start_date = ? WHERE id = ?;",
-    [employee.name, employee.role, employee.start_date, employee.id]
+    [employee.name, employee.role, employee.start_date, employee.id!]
   );
 };
 

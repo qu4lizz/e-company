@@ -1,5 +1,5 @@
 export interface InventoryListItem {
-  id: number;
+  id?: number;
   inventory_list_id: number;
   asset_id: number;
   current_employee_id: number;

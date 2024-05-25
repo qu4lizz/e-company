@@ -11,4 +11,6 @@ export const CreateNewAsset = () => {
     employee_id: yup.number().required("Employee is required"),
     image: yup.array().required("Image is required"),
   });
+
+  return null;
 };

@@ -1,8 +1,16 @@
 {
+  "dateFormat": "en",
   "assets": "Assets",
   "employees": "Employees",
   "settings": "Settings",
   "locations": "Locations",
   "inventoryLists": "Inventory Lists",
-  "nameAndSurname": "Name and Surname"
+  "nameAndSurname": "Name and Surname",
+  "role": "Role",
+  "startDate": "Started Working",
+  "createNewEmployee": "Create New Employee",
+  "create": "Create",
+  "nameAndSurnameRequired": "Name and Surname are required",
+  "roleRequired": "Role is required",
+  "startDateRequired": "Start date is required"
 }

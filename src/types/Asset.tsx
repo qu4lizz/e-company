@@ -1,5 +1,5 @@
 export interface Asset {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   barcode: string;

@@ -18,6 +18,7 @@ i18next.use(initReactI18next).init({
   debug: false,
   fallbackLng: "sr-Latn",
   saveMissing: true,
+  compatibilityJSON: "v3",
 });
 
 export default i18next;

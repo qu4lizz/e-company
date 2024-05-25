@@ -1,8 +1,16 @@
 {
+  "dateFormat": "sr",
   "assets": "Osnovna sredstva",
   "employees": "Zaposleni",
   "settings": "Podešavanja",
   "locations": "Lokacije",
   "inventoryLists": "Popisne liste",
-  "nameAndSurname": "Ime i prezime"
+  "nameAndSurname": "Ime i prezime",
+  "role": "Pozicija",
+  "startDate": "Početak rada",
+  "createNewEmployee": "Kreiraj novog zaposlenog",
+  "create": "Kreiraj",
+  "nameAndSurnameRequired": "Ime i prezime su obavezni",
+  "roleRequired": "Pozicija je obavezna",
+  "startDateRequired": "Početak rada je obavezan"
 }

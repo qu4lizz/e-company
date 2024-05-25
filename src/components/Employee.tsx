@@ -1,29 +1,28 @@
-import { Text } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import { Employee as EmployeeType } from "../types/Employee";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { formatDate } from "../utils/utils";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 20,
-    padding: 20,
-    paddingRight: 90,
-  },
   textFormat: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  bottomContainer: {
+  container: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
+    padding: 20,
+    gap: 10,
+    width: "100%",
+  },
+  iconsContainer: {
+    display: "flex",
     gap: 10,
   },
 });
@@ -34,22 +33,58 @@ interface EmployeeProps {
 
 export function Employee({ employee }: EmployeeProps) {
   const { t } = useTranslation("home");
+  const theme = useTheme();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.textFormat}>
-        <Text variant="labelMedium">{t("name")}</Text>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: theme.colors.primaryContainer },
+      ]}
+    >
+      <View style={[styles.textFormat, { width: "30%" }]}>
+        <Text variant="bodyMedium">{t("nameAndSurname")}</Text>
         <Text variant="titleMedium">{employee.name}</Text>
       </View>
-      <View style={styles.bottomContainer}>
-        <View style={styles.textFormat}>
-          <Text variant="labelMedium">{t("role")}</Text>
-          <Text variant="titleMedium">{employee.role}</Text>
-        </View>
-        <View style={styles.textFormat}>
-          <Text variant="labelMedium">{t("start_date")}</Text>
-          <Text variant="titleMedium">{employee.start_date}</Text>
-        </View>
+      <View style={[styles.textFormat, { width: "25%" }]}>
+        <Text variant="bodyMedium">{t("role")}</Text>
+        <Text variant="titleMedium">{employee.role}</Text>
+      </View>
+      <View style={[styles.textFormat, { width: "30%" }]}>
+        <Text variant="bodyMedium">{t("startDate")}</Text>
+        <Text variant="titleMedium">
+          {formatDate(employee.start_date, "date")}
+        </Text>
+      </View>
+      <View style={styles.iconsContainer}>
+        <Pressable
+          style={{
+            borderColor: theme.colors.primary,
+            borderRadius: 10,
+            borderWidth: 2,
+            padding: 5,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="pencil-outline"
+            size={30}
+            color={theme.colors.primary}
+          />
+        </Pressable>
+        <Pressable
+          style={{
+            borderColor: theme.colors.primary,
+            borderRadius: 10,
+            borderWidth: 2,
+            padding: 5,
+          }}
+        >
+          <MaterialCommunityIcons
+            name="trash-can-outline"
+            size={30}
+            color={theme.colors.primary}
+          />
+        </Pressable>
       </View>
     </View>
   );
