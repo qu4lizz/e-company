@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { connectToDatabase, createTables } from "../db/db";
+import { createTables } from "../db/db";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Assets } from "../screens/Assets";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -7,7 +7,7 @@ import { Employees } from "../screens/Employees";
 import { Settings } from "../screens/Settings";
 import { Locations } from "../screens/Locations";
 import { InventoryLists } from "../screens/InventoryLists";
-import { useTheme } from "react-native-paper";
+import { db } from "../db/db";
 import {
   NavigationContainer as NavigationContainer,
   DarkTheme as NavigationDarkTheme,
@@ -20,7 +20,7 @@ import {
 } from "react-native-paper";
 import merge from "deepmerge";
 import { SearchFilterHeader } from "./SearchFilterHeader";
-import MarginLayout from "./MarginLayout";
+import { useTranslation } from "react-i18next";
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -32,16 +32,11 @@ const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
 
 const Tab = createBottomTabNavigator();
 
-const WrappedAssets = MarginLayout(Assets);
-const WrappedEmployees = MarginLayout(Employees);
-const WrappedSettings = MarginLayout(Settings);
-const WrappedLocations = MarginLayout(Locations);
-const WrappedInventoryLists = MarginLayout(InventoryLists);
-
 export function Main() {
+  const { t } = useTranslation("home");
+
   const initDatabase = useCallback(async () => {
     try {
-      const db = await connectToDatabase();
       await createTables(db);
     } catch (error) {
       console.error("Error loading data", error);
@@ -55,12 +50,12 @@ export function Main() {
   return (
     <NavigationContainer theme={CombinedDefaultTheme}>
       <Tab.Navigator
-        initialRouteName="Assets"
+        initialRouteName={t("assets")}
         screenOptions={{ tabBarShowLabel: false }}
       >
         <Tab.Screen
-          name="Assets"
-          component={WrappedAssets}
+          name={t("assets")}
+          component={Assets}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -73,8 +68,8 @@ export function Main() {
           }}
         />
         <Tab.Screen
-          name="Employees"
-          component={WrappedEmployees}
+          name={t("employees")}
+          component={Employees}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -83,11 +78,12 @@ export function Main() {
                 size={size}
               />
             ),
+            headerRight: () => <SearchFilterHeader />,
           }}
         />
         <Tab.Screen
-          name="Settings"
-          component={WrappedSettings}
+          name={t("settings")}
+          component={Settings}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -96,11 +92,12 @@ export function Main() {
                 size={size}
               />
             ),
+            headerRight: () => <SearchFilterHeader />,
           }}
         />
         <Tab.Screen
-          name="Locations"
-          component={WrappedLocations}
+          name={t("locations")}
+          component={Locations}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -109,11 +106,12 @@ export function Main() {
                 size={size}
               />
             ),
+            headerRight: () => <SearchFilterHeader />,
           }}
         />
         <Tab.Screen
-          name="Inventory"
-          component={WrappedInventoryLists}
+          name={t("inventoryLists")}
+          component={InventoryLists}
           options={{
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
@@ -122,6 +120,7 @@ export function Main() {
                 size={size}
               />
             ),
+            headerRight: () => <SearchFilterHeader />,
           }}
         />
       </Tab.Navigator>

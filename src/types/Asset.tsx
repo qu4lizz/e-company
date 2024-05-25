@@ -7,5 +7,5 @@ export interface Asset {
   created_at: string;
   location_id: number;
   employee_id: number;
-  image: string;
+  image: Uint8Array;
 }

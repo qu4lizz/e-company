@@ -1,8 +1,6 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from "expo-sqlite";
 
-export const connectToDatabase = async () => {
-  return await SQLite.openDatabaseAsync('eCompany.db');
-};
+export const db = SQLite.openDatabaseSync("eCompany.db");
 
 export const createTables = async (db: any) => {
   const assetQuery = `
@@ -15,7 +13,7 @@ export const createTables = async (db: any) => {
       created_at TEXT NOT NULL,
       location_id INTEGER NOT NULL,
       employee_id INTEGER NOT NULL,
-      image TEXT NOT NULL,
+      image BLOB NOT NULL,
       FOREIGN KEY(location_id) REFERENCES location(id),
       FOREIGN KEY(employee_id) REFERENCES employee(id)
     )

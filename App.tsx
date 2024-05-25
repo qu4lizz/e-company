@@ -11,6 +11,9 @@ import {
   adaptNavigationTheme,
 } from "react-native-paper";
 import merge from "deepmerge";
+import "./src/translations/translation";
+import { Suspense } from "react";
+import { Fallback } from "./src/screens/Fallback";
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -23,7 +26,9 @@ const CombinedDarkTheme = merge(MD3DarkTheme, DarkTheme);
 export default function App() {
   return (
     <PaperProvider theme={CombinedDefaultTheme}>
-      <Main />
+      <Suspense fallback={<Fallback />}>
+        <Main />
+      </Suspense>
     </PaperProvider>
   );
 }
