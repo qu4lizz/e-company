@@ -11,7 +11,11 @@ import { useTranslation } from "react-i18next";
 import { setHeader } from "../reducers/headerSlice";
 import { ItemSeparator } from "../components/ItemSeparator";
 import { FilterEmployees } from "../components/FilterEmployees";
-import { itemsContainerStyles as styles, modalStyles } from "../styles/styles";
+import {
+  itemsContainerStyles as styles,
+  modalStyles,
+  searchbarStyles,
+} from "../styles/styles";
 
 export function Employees() {
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
@@ -69,7 +73,7 @@ export function Employees() {
       </Portal>
       {isFocused && states.search && (
         <Searchbar
-          style={{ margin: 10 }}
+          style={searchbarStyles.container}
           placeholder={t("searchByName")}
           onChangeText={setSearchQuery}
           value={searchQuery}

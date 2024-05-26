@@ -6,8 +6,16 @@ import { Modal, Portal, Searchbar, useTheme } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { Location as LocationType } from "../types/Location";
 import { Location } from "../components/Location";
-import { getLocations, getLocationsByName } from "../db/locations";
-import { itemsContainerStyles as styles, modalStyles } from "../styles/styles";
+import {
+  getLocations,
+  getLocationsByAddress,
+  getLocationsByName,
+} from "../db/locations";
+import {
+  itemsContainerStyles as styles,
+  modalStyles,
+  searchbarStyles,
+} from "../styles/styles";
 import { setHeader } from "../reducers/headerSlice";
 import { ItemSeparator } from "../components/ItemSeparator";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -21,6 +29,7 @@ export type CreateNewLocationNavigationProp = StackNavigationProp<
 export function Locations() {
   const [locations, setLocations] = useState<LocationType[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [filterQuery, setFilterQuery] = React.useState("");
 
   const navigation = useNavigation<CreateNewLocationNavigationProp>();
   const { t } = useTranslation("home");
@@ -31,11 +40,15 @@ export function Locations() {
 
   useEffect(() => {
     reload();
-  }, [searchQuery]);
+  }, [searchQuery, filterQuery]);
 
   const reload = () => {
     if (searchQuery.length > 0) {
       getLocationsByName(searchQuery).then((res) => {
+        setLocations(res);
+      });
+    } else if (filterQuery.length > 0) {
+      getLocationsByAddress(filterQuery).then((res) => {
         setLocations(res);
       });
     } else {
@@ -58,33 +71,26 @@ export function Locations() {
 
   return (
     <View style={styles.container}>
-      <Portal>
-        <Modal
-          visible={isFocused && states.filter}
-          onDismiss={async () => dispatch(await setHeader("falsifyAll"))}
-          contentContainerStyle={[
-            {
-              backgroundColor: theme.colors.background,
-            },
-            modalStyles.container,
-          ]}
-        >
-          <View>
-            <ScrollView>
-              {/* {states.filter && (<FilterLocations setLocation={reloadByFilter} />)} */}
-            </ScrollView>
-          </View>
-        </Modal>
-      </Portal>
-
       {isFocused && states.search && (
         <Searchbar
-          style={{ margin: 10 }}
+          style={searchbarStyles.container}
           placeholder={t("searchByName")}
           onChangeText={setSearchQuery}
           value={searchQuery}
           onClearIconPress={async () => {
             setSearchQuery("");
+            dispatch(await setHeader("falsifyAll"));
+          }}
+        />
+      )}
+      {isFocused && states.filter && (
+        <Searchbar
+          style={searchbarStyles.container}
+          placeholder={t("filterByAddress")}
+          onChangeText={setFilterQuery}
+          value={filterQuery}
+          onClearIconPress={async () => {
+            setFilterQuery("");
             dispatch(await setHeader("falsifyAll"));
           }}
         />

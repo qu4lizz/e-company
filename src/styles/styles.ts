@@ -95,3 +95,9 @@ export const mapStyles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export const searchbarStyles = StyleSheet.create({
+  container: {
+    margin: 10,
+  },
+});

@@ -21,6 +21,16 @@ export const getLocationsByName = async (name: string): Promise<Location[]> => {
   return allRows;
 };
 
+export const getLocationsByAddress = async (
+  address: string
+): Promise<Location[]> => {
+  const allRows: Location[] = await db.getAllAsync(
+    "SELECT * FROM location WHERE LOWER(address) LIKE LOWER('%' || ? || '%');",
+    [address]
+  );
+  return allRows;
+};
+
 export const updateLocation = async (location: Location): Promise<void> => {
   await db.runAsync(
     "UPDATE location SET name = ?, address = ?, latitude = ?, longitude = ? WHERE id = ?;",
