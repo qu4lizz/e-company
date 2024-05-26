@@ -63,10 +63,17 @@ export const createTables = async (db: any) => {
       FOREIGN KEY(new_location_id) REFERENCES location(id)
     )
   `;
+  const settings = `
+    CREATE TABLE IF NOT EXISTS settings (
+      name TEXT NOT NULL PRIMARY KEY,
+      value TEXT NOT NULL
+    )
+  `;
 
   await db.runAsync(employeeQuery);
   await db.runAsync(locationQuery);
   await db.runAsync(assetQuery);
   await db.runAsync(inventoryList);
   await db.runAsync(inventoryListItem);
+  await db.runAsync(settings);
 };

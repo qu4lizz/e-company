@@ -21,7 +21,7 @@ export function Employees() {
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const theme = useTheme();
   const states = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();

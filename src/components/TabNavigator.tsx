@@ -13,12 +13,12 @@ import { Settings } from "../screens/Settings";
 const Tab = createBottomTabNavigator();
 
 export function TabNavigator() {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const dispatch = useAppDispatch();
 
   return (
     <Tab.Navigator
-      initialRouteName={t("assets")}
+      initialRouteName="Assets"
       screenOptions={{ tabBarShowLabel: false }}
       screenListeners={{
         tabPress: async () => {
@@ -27,7 +27,7 @@ export function TabNavigator() {
       }}
     >
       <Tab.Screen
-        name={t("assets")}
+        name="Assets"
         component={Assets}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -38,10 +38,11 @@ export function TabNavigator() {
             />
           ),
           headerRight: () => <SearchFilterHeader />,
+          headerTitle: t("assets"),
         }}
       />
       <Tab.Screen
-        name={t("employees")}
+        name="Employees"
         component={Employees}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -52,10 +53,11 @@ export function TabNavigator() {
             />
           ),
           headerRight: () => <SearchFilterHeader />,
+          headerTitle: t("employees"),
         }}
       />
       <Tab.Screen
-        name={t("settings")}
+        name="Settings"
         component={Settings}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -65,10 +67,11 @@ export function TabNavigator() {
               size={size}
             />
           ),
+          headerTitle: t("settings"),
         }}
       />
       <Tab.Screen
-        name={t("locations")}
+        name="Locations"
         component={Locations}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -79,10 +82,11 @@ export function TabNavigator() {
             />
           ),
           headerRight: () => <SearchFilterHeader />,
+          headerTitle: t("locations"),
         }}
       />
       <Tab.Screen
-        name={t("inventoryLists")}
+        name="InventoryLists"
         component={InventoryLists}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -93,6 +97,7 @@ export function TabNavigator() {
             />
           ),
           headerRight: () => <SearchFilterHeader />,
+          headerTitle: t("inventoryLists"),
         }}
       />
     </Tab.Navigator>

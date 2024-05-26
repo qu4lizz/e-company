@@ -22,7 +22,7 @@ interface Props {
 }
 
 export function Location({ location, reload }: Props) {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const theme = useTheme();
   const navigation = useNavigation<CreateNewLocationNavigationProp>();
 
@@ -48,7 +48,7 @@ export function Location({ location, reload }: Props) {
     <View
       style={[
         styles.container,
-        { backgroundColor: theme.colors.primaryContainer },
+        { backgroundColor: theme.colors.inverseOnSurface },
       ]}
     >
       <Portal>

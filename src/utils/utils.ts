@@ -5,7 +5,7 @@ export function formatDate(
   date: string | Date,
   formatType: FormatType = "date"
 ): string {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const options = {
     dateStyle: "medium",
     timeStyle: formatType === "datetime" ? "short" : undefined,

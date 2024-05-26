@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import headerSlice from "./headerSlice";
+import settingsSlice from "./settingsSlice";
 
 export const store = configureStore({
   reducer: {
     header: headerSlice,
+    settings: settingsSlice,
   },
 });
 

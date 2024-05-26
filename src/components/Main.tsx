@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect } from "react";
+import React, { Suspense, useCallback, useEffect } from "react";
 import { createTables } from "../db/db";
 import { db } from "../db/db";
 import { NavigationContainer as NavigationContainer } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { registerTranslation, enGB } from "react-native-paper-dates";
-import { CombinedDefaultTheme } from "../themes";
+import { CombinedDefaultTheme, CombinedDarkTheme } from "../themes";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabNavigator } from "./TabNavigator";
 import { CreateNewLocation } from "./CreateNewLocation";
 import { Location } from "../types/Location";
+import { PaperProvider } from "react-native-paper";
+import { Fallback } from "../screens/Fallback";
+import { initializeSettings } from "../reducers/settingsSlice";
+import { useAppDispatch, useAppSelector } from "../reducers/store";
 
 export type RootStackParamList = {
   TabNavigator: {};
@@ -21,7 +25,9 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 export function Main() {
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation(["home"]);
+  const settings = useAppSelector((state) => state.settings);
+  const dispatch = useAppDispatch();
 
   const initDatabase = useCallback(async () => {
     try {
@@ -34,28 +40,52 @@ export function Main() {
   useEffect(() => {
     initDatabase();
     registerTranslation("en-GB", enGB);
+    dispatch(initializeSettings());
   }, [initDatabase]);
 
+  useEffect(() => {
+    const languageI18n = settings.language === "english" ? "en-GB" : "sr-Latn";
+    i18n.changeLanguage(languageI18n);
+  }, [settings.language]);
+
   return (
-    <NavigationContainer theme={CombinedDefaultTheme}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="TabNavigator"
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="CreateNewLocation"
-          component={CreateNewLocation}
-          options={{
-            title: t("createNewLocation"),
-          }}
-          initialParams={{
-            reload: () => {},
-            location: undefined,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      {settings && (
+        <PaperProvider
+          theme={
+            settings.theme === "dark" ? CombinedDarkTheme : CombinedDefaultTheme
+          }
+        >
+          <Suspense fallback={<Fallback />}>
+            <NavigationContainer
+              theme={
+                settings.theme === "dark"
+                  ? CombinedDarkTheme
+                  : CombinedDefaultTheme
+              }
+            >
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="TabNavigator"
+                  component={TabNavigator}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="CreateNewLocation"
+                  component={CreateNewLocation}
+                  options={{
+                    title: t("createNewLocation"),
+                  }}
+                  initialParams={{
+                    reload: () => {},
+                    location: undefined,
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </Suspense>
+        </PaperProvider>
+      )}
+    </>
   );
 }

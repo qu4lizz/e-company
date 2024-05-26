@@ -24,7 +24,7 @@ export function CreateNewLocation() {
   const route = useRoute<CreateNewLocationRouteProp>();
   const { reload, location } = route.params;
 
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 

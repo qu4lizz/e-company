@@ -32,8 +32,7 @@ export function Locations() {
   const [filterQuery, setFilterQuery] = React.useState("");
 
   const navigation = useNavigation<CreateNewLocationNavigationProp>();
-  const { t } = useTranslation("home");
-  const theme = useTheme();
+  const { t } = useTranslation(["home"]);
   const states = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();
   const isFocused = useIsFocused();

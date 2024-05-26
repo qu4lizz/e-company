@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function CreateNewEmployee({ reload, employee, setEdit }: Props) {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const dispatch = useAppDispatch();
 
   const editing = employee ? true : false;

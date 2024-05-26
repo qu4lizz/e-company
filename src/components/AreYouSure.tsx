@@ -26,7 +26,7 @@ interface Props {
 }
 
 export function AreYouSure({ onDelete, onCancel }: Props) {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const theme = useTheme();
 
   return (

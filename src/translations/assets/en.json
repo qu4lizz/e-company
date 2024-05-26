@@ -1,5 +1,5 @@
 {
-  "dateFormat": "en",
+  "dateFormat": "en-GB",
   "assets": "Assets",
   "employees": "Employees",
   "settings": "Settings",
@@ -31,5 +31,11 @@
   "nameRequired": "Name is required",
   "selectLocationRequired": "It is required to select location on map",
   "coordinateRequired": "Coordinate is required",
-  "address": "Address"
+  "address": "Address",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language",
+  "english": "English",
+  "serbian": "Serbian"
 }

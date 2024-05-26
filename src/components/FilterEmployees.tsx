@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function FilterEmployees({ setEmployees }: Props) {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
 
   const [date, setDate] = useState<Date>();
   const [isBefore, setIsBefore] = useState<boolean>(true);

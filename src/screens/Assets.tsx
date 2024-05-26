@@ -25,7 +25,7 @@ export function Assets() {
     getAssets().then((res) => setAssets(res));
   }, []);
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(["home"]);
   const route = useRoute();
   const states = useAppSelector((state) => state.header);
 

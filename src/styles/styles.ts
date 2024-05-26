@@ -101,3 +101,27 @@ export const searchbarStyles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export const settingsStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    padding: 20,
+  },
+  item: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    padding: 10,
+  },
+  icon: {
+    padding: 8,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

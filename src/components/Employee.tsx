@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function Employee({ employee, reload }: Props) {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation(["home"]);
   const theme = useTheme();
 
   const [isEditing, setEdit] = useState(false);
@@ -39,7 +39,7 @@ export function Employee({ employee, reload }: Props) {
     <View
       style={[
         styles.container,
-        { backgroundColor: theme.colors.primaryContainer },
+        { backgroundColor: theme.colors.inverseOnSurface },
       ]}
     >
       <Portal>

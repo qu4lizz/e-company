@@ -31,5 +31,11 @@
   "nameRequired": "Naziv je obavezan",
   "selectLocationRequired": "Obavezno je izabrati lokaciju na mapi",
   "coordinateRequired": "Koordinata je obavezna",
-  "address": "Adresa"
+  "address": "Adresa",
+  "theme": "Tema",
+  "light": "Svijetla",
+  "dark": "Tamna",
+  "language": "Jezik",
+  "english": "Engleski",
+  "serbian": "Srpski"
 }
