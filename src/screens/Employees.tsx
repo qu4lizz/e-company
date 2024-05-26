@@ -3,7 +3,7 @@ import { View, FlatList, ScrollView } from "react-native";
 import { Employee as EmployeeType } from "../types/Employee";
 import { getEmployees, getEmployeesByName } from "../db/employee";
 import { Employee } from "../components/Employee";
-import { useRoute } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { Modal, Portal, Searchbar, useTheme } from "react-native-paper";
 import { CreateNewEmployee } from "../components/CreateNewEmployee";
@@ -19,9 +19,9 @@ export function Employees() {
 
   const { t } = useTranslation("home");
   const theme = useTheme();
-  const route = useRoute();
   const states = useAppSelector((state) => state.header);
   const dispatch = useAppDispatch();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     reload();
@@ -48,9 +48,7 @@ export function Employees() {
     <View style={styles.container}>
       <Portal>
         <Modal
-          visible={
-            route.name === t("employees") && (states.filter || states.add)
-          }
+          visible={isFocused && (states.filter || states.add)}
           onDismiss={async () => dispatch(await setHeader("falsifyAll"))}
           contentContainerStyle={[
             {
@@ -69,7 +67,7 @@ export function Employees() {
           </View>
         </Modal>
       </Portal>
-      {route.name === t("employees") && states.search && (
+      {isFocused && states.search && (
         <Searchbar
           style={{ margin: 10 }}
           placeholder={t("searchByName")}

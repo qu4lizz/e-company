@@ -1,12 +1,20 @@
 import { useTranslation } from "react-i18next";
 import { Location as LocationType } from "../types/Location";
-import { Divider, Modal, Portal, Text, useTheme } from "react-native-paper";
+import { Modal, Portal, Text, useTheme } from "react-native-paper";
 import { useState } from "react";
 import { deleteLocation } from "../db/locations";
 import { Pressable, ScrollView, View } from "react-native";
-import { singleItemStyles as styles, modalStyles } from "../styles/styles";
+import {
+  singleItemStyles as styles,
+  modalStyles,
+  iconSize,
+} from "../styles/styles";
 import { AreYouSure } from "./AreYouSure";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./Main";
+import { useNavigation } from "@react-navigation/native";
+import { CreateNewLocationNavigationProp } from "../screens/Locations";
 
 interface Props {
   location: LocationType;
@@ -16,8 +24,8 @@ interface Props {
 export function Location({ location, reload }: Props) {
   const { t } = useTranslation("home");
   const theme = useTheme();
+  const navigation = useNavigation<CreateNewLocationNavigationProp>();
 
-  const [isEditing, setEdit] = useState(false);
   const [isDeleting, setDelete] = useState(false);
 
   const onDelete = () => {
@@ -27,6 +35,13 @@ export function Location({ location, reload }: Props) {
 
   const onDeleteCancel = () => {
     setDelete(false);
+  };
+
+  const onEdit = () => {
+    navigation.navigate("CreateNewLocation", {
+      reload,
+      location,
+    });
   };
 
   return (
@@ -69,32 +84,22 @@ export function Location({ location, reload }: Props) {
       </View>
       <View style={styles.iconsContainer}>
         <Pressable
-          style={{
-            borderColor: theme.colors.primary,
-            borderRadius: 10,
-            borderWidth: 2,
-            padding: 5,
-          }}
-          onPress={() => setEdit(true)}
+          style={[{ borderColor: theme.colors.primary }, styles.icons]}
+          onPress={onEdit}
         >
           <MaterialCommunityIcons
             name="pencil-outline"
-            size={30}
+            size={iconSize}
             color={theme.colors.primary}
           />
         </Pressable>
         <Pressable
-          style={{
-            borderColor: theme.colors.primary,
-            borderRadius: 10,
-            borderWidth: 2,
-            padding: 5,
-          }}
+          style={[{ borderColor: theme.colors.primary }, styles.icons]}
           onPress={() => setDelete(true)}
         >
           <MaterialCommunityIcons
             name="trash-can-outline"
-            size={30}
+            size={iconSize}
             color={theme.colors.primary}
           />
         </Pressable>

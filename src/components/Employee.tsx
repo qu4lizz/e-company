@@ -8,7 +8,11 @@ import { useState } from "react";
 import { CreateNewEmployee } from "./CreateNewEmployee";
 import { AreYouSure } from "./AreYouSure";
 import { deleteEmployee } from "../db/employee";
-import { singleItemStyles as styles, modalStyles } from "../styles/styles";
+import {
+  singleItemStyles as styles,
+  modalStyles,
+  iconSize,
+} from "../styles/styles";
 
 interface Props {
   employee: EmployeeType;
@@ -84,32 +88,22 @@ export function Employee({ employee, reload }: Props) {
       </View>
       <View style={styles.iconsContainer}>
         <Pressable
-          style={{
-            borderColor: theme.colors.primary,
-            borderRadius: 10,
-            borderWidth: 2,
-            padding: 5,
-          }}
+          style={[{ borderColor: theme.colors.primary }, styles.icons]}
           onPress={() => setEdit(true)}
         >
           <MaterialCommunityIcons
             name="pencil-outline"
-            size={30}
+            size={iconSize}
             color={theme.colors.primary}
           />
         </Pressable>
         <Pressable
-          style={{
-            borderColor: theme.colors.primary,
-            borderRadius: 10,
-            borderWidth: 2,
-            padding: 5,
-          }}
+          style={[{ borderColor: theme.colors.primary }, styles.icons]}
           onPress={() => setDelete(true)}
         >
           <MaterialCommunityIcons
             name="trash-can-outline"
-            size={30}
+            size={iconSize}
             color={theme.colors.primary}
           />
         </Pressable>

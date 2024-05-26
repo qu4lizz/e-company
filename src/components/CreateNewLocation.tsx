@@ -1,84 +1,101 @@
 import { useTranslation } from "react-i18next";
-import { Location } from "../types/Location";
 import { useAppDispatch } from "../reducers/store";
 import * as yup from "yup";
 import { useState } from "react";
 import { createLocation, updateLocation } from "../db/locations";
 import { setHeader } from "../reducers/headerSlice";
 import { useFormik } from "formik";
-import MapView, { LatLng, Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { View } from "react-native";
 import { createNewStyles, mapStyles } from "../styles/styles";
 import { Button, Text, TextInput } from "react-native-paper";
 import mapCenter from "../../assets/mapCenter.json";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import { getAddressFromCoordinates } from "../utils/utils";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "./Main";
 
-interface Props {
-  reload: () => void;
-  setEdit?: any;
-  location?: Location;
-}
+type CreateNewLocationRouteProp = RouteProp<
+  RootStackParamList,
+  "CreateNewLocation"
+>;
 
-export function CreateNewLocation({ reload, setEdit, location }: Props) {
+export function CreateNewLocation() {
+  const route = useRoute<CreateNewLocationRouteProp>();
+  const { reload, location } = route.params;
+
   const { t } = useTranslation("home");
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
-  const [coordinate, setCoordinate] = useState<LatLng>({
-    latitude: mapCenter.lat,
-    longitude: mapCenter.lng,
-  });
+  const [addressChanged, setAddressChanged] = useState(false);
+  const [addressError, setAddressError] = useState(false);
 
   const editing = location ? true : false;
 
   const validationSchema = yup.object().shape({
     name: yup.string().required(t("nameRequired")),
-    address: yup.string().required(t("addressRequired")),
+    coordinate: yup.object().required(t("addressRequired")),
   });
 
   const [loading, setLoading] = useState(false);
+
   const onSubmit = async () => {
     setLoading(true);
 
-    const address = await getAddressFromCoordinates(
-      coordinate.latitude,
-      coordinate.longitude
-    );
+    let address = form.values.address;
+    if (addressChanged) {
+      address = await getAddressFromCoordinates(
+        form.values.coordinate.latitude!,
+        form.values.coordinate.longitude!
+      );
+    }
+
+    if (address.length === 0) {
+      setAddressError(true);
+      setLoading(false);
+      return;
+    }
 
     if (editing) {
       updateLocation({
         id: location!.id,
         name: form.values.name,
         address,
-        latitude: form.values.latitude,
-        longitude: form.values.longitude,
+        latitude: form.values.coordinate.latitude!,
+        longitude: form.values.coordinate.longitude!,
       })
         .then(async () => {
-          setEdit(false);
           reload();
         })
-        .finally(() => setLoading(false));
-      return;
+        .finally(() => {
+          setLoading(false);
+          navigation.goBack();
+        });
     } else {
       createLocation({
         name: form.values.name,
         address,
-        latitude: form.values.latitude,
-        longitude: form.values.longitude,
+        latitude: form.values.coordinate.latitude!,
+        longitude: form.values.coordinate.longitude!,
       })
         .then(async () => {
           dispatch(await setHeader("falsifyAll"));
           reload();
         })
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+          navigation.goBack();
+        });
     }
   };
 
   const initialValues = {
     name: editing ? location!.name : "",
     address: editing ? location!.address : "",
-    latitude: editing ? location!.latitude : 0,
-    longitude: editing ? location!.longitude : 0,
+    coordinate: editing
+      ? { latitude: location!.latitude, longitude: location!.longitude }
+      : { latitude: mapCenter.lat, longitude: mapCenter.lng },
   };
 
   const form = useFormik({
@@ -91,7 +108,6 @@ export function CreateNewLocation({ reload, setEdit, location }: Props) {
     <View
       style={[createNewStyles.container, { marginBottom: 20, marginTop: 20 }]}
     >
-      <Text variant="titleLarge">{t("createNewLocation")}</Text>
       <View style={createNewStyles.inputView}>
         <TextInput
           style={{ width: "100%" }}
@@ -110,25 +126,25 @@ export function CreateNewLocation({ reload, setEdit, location }: Props) {
           style={mapStyles.map}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: mapCenter.lat,
-            longitude: mapCenter.lng,
+            latitude: location ? location.latitude : mapCenter.lat,
+            longitude: location ? location.longitude : mapCenter.lng,
             latitudeDelta: 4,
             longitudeDelta: 1,
           }}
         >
           <Marker
             draggable={true}
-            coordinate={coordinate}
+            coordinate={form.values.coordinate}
             onDragEnd={(e) => {
-              setCoordinate(e.nativeEvent.coordinate);
-              form.setFieldValue("latitude", e.nativeEvent.coordinate.latitude);
-              form.setFieldValue(
-                "longitude",
-                e.nativeEvent.coordinate.longitude
-              );
+              setAddressChanged(true);
+              setAddressError(false);
+              form.setFieldValue("coordinate", e.nativeEvent.coordinate);
             }}
           />
         </MapView>
+        {addressError && (
+          <Text variant="titleLarge">{t("selectLocationRequired")}</Text>
+        )}
       </View>
       <Button mode="contained" loading={loading} onPress={onSubmit}>
         {editing ? t("edit") : t("create")}

@@ -53,7 +53,17 @@ export const singleItemStyles = StyleSheet.create({
   textContainer: {
     display: "flex",
   },
+  icons: {
+    borderRadius: 10,
+    borderWidth: 2,
+    padding: 5,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
+
+export const iconSize = 26;
 
 export const modalStyles = StyleSheet.create({
   container: {
@@ -76,6 +86,9 @@ export const mapStyles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
+    gap: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   map: {
     width: "100%",

@@ -28,7 +28,7 @@
   "createNewLocation": "Kreiraj novu lokaciju",
   "name": "Naziv",
   "nameRequired": "Naziv je obavezan",
-  "addressRequired": "Adresa je obavezna",
+  "selectLocationRequired": "Obavezno je izabrati lokaciju na mapi",
   "coordinateRequired": "Koordinata je obavezna",
   "address": "Adresa"
 }

@@ -28,7 +28,7 @@
   "createNewLocation": "Create New Location",
   "name": "Name",
   "nameRequired": "Name is required",
-  "addressRequired": "Address is required",
+  "selectLocationRequired": "It is required to select location on map",
   "coordinateRequired": "Coordinate is required",
   "address": "Address"
 }

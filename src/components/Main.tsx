@@ -1,26 +1,27 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createTables } from "../db/db";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Assets } from "../screens/Assets";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Employees } from "../screens/Employees";
-import { Settings } from "../screens/Settings";
-import { Locations } from "../screens/Locations";
-import { InventoryLists } from "../screens/InventoryLists";
 import { db } from "../db/db";
 import { NavigationContainer as NavigationContainer } from "@react-navigation/native";
-import { SearchFilterHeader } from "./SearchFilterHeader";
 import { useTranslation } from "react-i18next";
 import { registerTranslation, enGB } from "react-native-paper-dates";
 import { CombinedDefaultTheme } from "../themes";
-import { useAppDispatch } from "../reducers/store";
-import { setHeader } from "../reducers/headerSlice";
+import { createStackNavigator } from "@react-navigation/stack";
+import { TabNavigator } from "./TabNavigator";
+import { CreateNewLocation } from "./CreateNewLocation";
+import { Location } from "../types/Location";
 
-const Tab = createBottomTabNavigator();
+export type RootStackParamList = {
+  TabNavigator: {};
+  CreateNewLocation: {
+    reload: () => void;
+    location?: Location;
+  };
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export function Main() {
   const { t } = useTranslation("home");
-  const dispatch = useAppDispatch();
 
   const initDatabase = useCallback(async () => {
     try {
@@ -37,86 +38,24 @@ export function Main() {
 
   return (
     <NavigationContainer theme={CombinedDefaultTheme}>
-      <Tab.Navigator
-        initialRouteName={t("assets")}
-        screenOptions={{ tabBarShowLabel: false }}
-        screenListeners={{
-          tabPress: async () => {
-            dispatch(await setHeader("falsifyAll"));
-          },
-        }}
-      >
-        <Tab.Screen
-          name={t("assets")}
-          component={Assets}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="TabNavigator"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateNewLocation"
+          component={CreateNewLocation}
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="archive-outline"
-                color={color}
-                size={size}
-              />
-            ),
-            headerRight: () => <SearchFilterHeader />,
+            title: t("createNewLocation"),
+          }}
+          initialParams={{
+            reload: () => {},
+            location: undefined,
           }}
         />
-        <Tab.Screen
-          name={t("employees")}
-          component={Employees}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="badge-account-outline"
-                color={color}
-                size={size}
-              />
-            ),
-            headerRight: () => <SearchFilterHeader />,
-          }}
-        />
-        <Tab.Screen
-          name={t("settings")}
-          component={Settings}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="cog-outline"
-                color={color}
-                size={size}
-              />
-            ),
-            headerRight: () => <SearchFilterHeader />,
-          }}
-        />
-        <Tab.Screen
-          name={t("locations")}
-          component={Locations}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="map-marker-outline"
-                color={color}
-                size={size}
-              />
-            ),
-            headerRight: () => <SearchFilterHeader />,
-          }}
-        />
-        <Tab.Screen
-          name={t("inventoryLists")}
-          component={InventoryLists}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="view-list-outline"
-                color={color}
-                size={size}
-              />
-            ),
-            headerRight: () => <SearchFilterHeader />,
-          }}
-        />
-      </Tab.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
