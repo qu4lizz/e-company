@@ -24,5 +24,11 @@
   "before": "Before",
   "after": "After",
   "dateOfEmployment": "Date of Employment",
-  "filter": "Filter"
+  "filter": "Filter",
+  "createNewLocation": "Create New Location",
+  "name": "Name",
+  "nameRequired": "Name is required",
+  "addressRequired": "Address is required",
+  "coordinateRequired": "Coordinate is required",
+  "address": "Address"
 }

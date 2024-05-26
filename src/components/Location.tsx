@@ -1,21 +1,19 @@
-import { Modal, Portal, Text, useTheme } from "react-native-paper";
-import { Employee as EmployeeType } from "../types/Employee";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { formatDate } from "../utils/utils";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { Location as LocationType } from "../types/Location";
+import { Divider, Modal, Portal, Text, useTheme } from "react-native-paper";
 import { useState } from "react";
-import { CreateNewEmployee } from "./CreateNewEmployee";
-import { AreYouSure } from "./AreYouSure";
-import { deleteEmployee } from "../db/employee";
+import { deleteLocation } from "../db/locations";
+import { Pressable, ScrollView, View } from "react-native";
 import { singleItemStyles as styles, modalStyles } from "../styles/styles";
+import { AreYouSure } from "./AreYouSure";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 interface Props {
-  employee: EmployeeType;
+  location: LocationType;
   reload: () => void;
 }
 
-export function Employee({ employee, reload }: Props) {
+export function Location({ location, reload }: Props) {
   const { t } = useTranslation("home");
   const theme = useTheme();
 
@@ -23,7 +21,7 @@ export function Employee({ employee, reload }: Props) {
   const [isDeleting, setDelete] = useState(false);
 
   const onDelete = () => {
-    deleteEmployee(employee.id!).then(() => setDelete(false));
+    deleteLocation(location.id!).then(() => setDelete(false));
     reload();
   };
 
@@ -40,9 +38,8 @@ export function Employee({ employee, reload }: Props) {
     >
       <Portal>
         <Modal
-          visible={isEditing || isDeleting}
+          visible={isDeleting}
           onDismiss={() => {
-            setEdit(false);
             setDelete(false);
           }}
           contentContainerStyle={[
@@ -52,13 +49,6 @@ export function Employee({ employee, reload }: Props) {
         >
           <View>
             <ScrollView>
-              {isEditing && (
-                <CreateNewEmployee
-                  reload={reload}
-                  employee={employee}
-                  setEdit={setEdit}
-                />
-              )}
               {isDeleting && (
                 <AreYouSure onDelete={onDelete} onCancel={onDeleteCancel} />
               )}
@@ -68,16 +58,13 @@ export function Employee({ employee, reload }: Props) {
       </Portal>
       <View style={styles.textFormat}>
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("nameAndSurname")}:</Text>{" "}
-          {employee.name}
+          <Text style={{ fontWeight: "bold" }}>{t("name")}:</Text>{" "}
+          {location.name}
         </Text>
+
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("role")}:</Text>{" "}
-          {employee.role}
-        </Text>
-        <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("startDate")}:</Text>{" "}
-          {formatDate(employee.start_date, "date")}
+          <Text style={{ fontWeight: "bold" }}>{t("address")}:</Text>{" "}
+          {location.address}
         </Text>
       </View>
       <View style={styles.iconsContainer}>

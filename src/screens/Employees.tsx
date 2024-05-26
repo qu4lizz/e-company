@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { View, FlatList, ScrollView } from "react-native";
 import { Employee as EmployeeType } from "../types/Employee";
 import { getEmployees, getEmployeesByName } from "../db/employee";
 import { Employee } from "../components/Employee";
@@ -17,20 +11,17 @@ import { useTranslation } from "react-i18next";
 import { setHeader } from "../reducers/headerSlice";
 import { ItemSeparator } from "../components/ItemSeparator";
 import { FilterEmployees } from "../components/FilterEmployees";
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  modal: {},
-});
+import { itemsContainerStyles as styles, modalStyles } from "../styles/styles";
 
 export function Employees() {
   const [employees, setEmployees] = useState<EmployeeType[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
+
+  const { t } = useTranslation("home");
+  const theme = useTheme();
+  const route = useRoute();
+  const states = useAppSelector((state) => state.header);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     reload();
@@ -53,12 +44,6 @@ export function Employees() {
     dispatch(await setHeader("falsifyAll"));
   };
 
-  const { t } = useTranslation("home");
-  const theme = useTheme();
-  const route = useRoute();
-  const states = useAppSelector((state) => state.header);
-  const dispatch = useAppDispatch();
-
   return (
     <View style={styles.container}>
       <Portal>
@@ -67,12 +52,12 @@ export function Employees() {
             route.name === t("employees") && (states.filter || states.add)
           }
           onDismiss={async () => dispatch(await setHeader("falsifyAll"))}
-          contentContainerStyle={{
-            backgroundColor: theme.colors.background,
-            padding: 20,
-            width: "85%",
-            alignSelf: "center",
-          }}
+          contentContainerStyle={[
+            {
+              backgroundColor: theme.colors.background,
+            },
+            modalStyles.container,
+          ]}
         >
           <View>
             <ScrollView>

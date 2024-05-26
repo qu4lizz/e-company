@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
 import * as yup from "yup";
 import { DatePickerInput } from "react-native-paper-dates";
