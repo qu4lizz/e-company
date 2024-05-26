@@ -68,16 +68,18 @@ export function Employee({ employee, reload }: Props) {
       </Portal>
       <View style={styles.textFormat}>
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("nameAndSurname")}:</Text>{" "}
-          {employee.name}
+          {t("nameAndSurname")}:{" "}
+          <Text style={{ fontWeight: "bold" }}>{employee.name}</Text>
         </Text>
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("role")}:</Text>{" "}
-          {employee.role}
+          {t("role")}:{" "}
+          <Text style={{ fontWeight: "bold" }}>{employee.role}</Text>
         </Text>
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("startDate")}:</Text>{" "}
-          {formatDate(employee.start_date, "date")}
+          {t("startDate")}:{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {formatDate(employee.start_date, "date")}
+          </Text>
         </Text>
       </View>
       <View style={styles.iconsContainer}>

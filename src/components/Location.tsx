@@ -58,13 +58,13 @@ export function Location({ location, reload }: Props) {
       </Portal>
       <View style={styles.textFormat}>
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("name")}:</Text>{" "}
-          {location.name}
+          {t("name")}:{" "}
+          <Text style={{ fontWeight: "bold" }}>{location.name}</Text>
         </Text>
 
         <Text variant="titleMedium">
-          <Text style={{ fontWeight: "bold" }}>{t("address")}:</Text>{" "}
-          {location.address}
+          {t("address")}:{" "}
+          <Text style={{ fontWeight: "bold" }}>{location.address}</Text>
         </Text>
       </View>
       <View style={styles.iconsContainer}>
