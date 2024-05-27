@@ -11,8 +11,6 @@ import {
 } from "../styles/styles";
 import { AreYouSure } from "./AreYouSure";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "./Main";
 import { useNavigation } from "@react-navigation/native";
 import { CreateNewLocationNavigationProp } from "../screens/Locations";
 

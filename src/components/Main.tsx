@@ -13,12 +13,18 @@ import { PaperProvider } from "react-native-paper";
 import { Fallback } from "../screens/Fallback";
 import { initializeSettings } from "../reducers/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
+import { Asset } from "../types/Asset";
+import { CreateNewAsset } from "./CreateNewAsset";
 
 export type RootStackParamList = {
   TabNavigator: {};
   CreateNewLocation: {
     reload: () => void;
     location?: Location;
+  };
+  CreateNewAsset: {
+    reload: () => void;
+    asset?: Asset;
   };
 };
 
@@ -69,6 +75,17 @@ export function Main() {
                   name="TabNavigator"
                   component={TabNavigator}
                   options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="CreateNewAsset"
+                  component={CreateNewAsset}
+                  options={{
+                    title: t("createNewAsset"),
+                  }}
+                  initialParams={{
+                    reload: () => {},
+                    asset: undefined,
+                  }}
                 />
                 <Stack.Screen
                   name="CreateNewLocation"

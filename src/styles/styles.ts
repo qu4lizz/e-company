@@ -2,9 +2,10 @@ import { StyleSheet } from "react-native";
 
 export const createNewStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    marginTop: 10,
     alignItems: "center",
     gap: 20,
     width: "100%",
@@ -15,6 +16,14 @@ export const createNewStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  imageUpload: {
+    width: "90%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
   },
 });
 
@@ -123,5 +132,73 @@ export const settingsStyles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+});
+
+export const selectStyles = StyleSheet.create({
+  container: {
+    width: "90%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dropdown: {
+    height: 50,
+    width: "100%",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 14,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: "absolute",
+    left: 10,
+    top: -8,
+    zIndex: 999,
+    paddingHorizontal: 6,
+    fontSize: 12,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});
+
+export const cameraStyles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+  },
+  camera: {
+    flexGrow: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 });

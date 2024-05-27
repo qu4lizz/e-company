@@ -13,6 +13,14 @@ export const getLocations = async (): Promise<Location[]> => {
   return allRows;
 };
 
+export const getLocationById = (id: number): Location => {
+  const allRows: Location[] = db.getAllSync(
+    "SELECT * FROM location WHERE id = ?;",
+    [id]
+  );
+  return allRows[0];
+};
+
 export const getLocationsByName = async (name: string): Promise<Location[]> => {
   const allRows: Location[] = await db.getAllAsync(
     "SELECT * FROM location WHERE LOWER(name) LIKE LOWER('%' || ? || '%');",

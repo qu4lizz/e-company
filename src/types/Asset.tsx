@@ -4,8 +4,8 @@ export interface Asset {
   description: string;
   barcode: string;
   price: number;
-  created_at: string;
+  created_at?: string;
   location_id: number;
   employee_id: number;
-  image: Uint8Array;
+  image: string;
 }

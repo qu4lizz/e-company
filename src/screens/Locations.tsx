@@ -1,8 +1,8 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, ScrollView, View } from "react-native";
-import { Modal, Portal, Searchbar, useTheme } from "react-native-paper";
+import { FlatList, View } from "react-native";
+import { Searchbar } from "react-native-paper";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { Location as LocationType } from "../types/Location";
 import { Location } from "../components/Location";
@@ -13,7 +13,6 @@ import {
 } from "../db/locations";
 import {
   itemsContainerStyles as styles,
-  modalStyles,
   searchbarStyles,
 } from "../styles/styles";
 import { setHeader } from "../reducers/headerSlice";
@@ -62,7 +61,7 @@ export function Locations() {
       navigation.navigate("CreateNewLocation", { reload });
       dispatchFalse();
     }
-  });
+  }, [isFocused, states.add]);
 
   const dispatchFalse = async () => {
     dispatch(await setHeader("falsifyAll"));
