@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export type CreateNewAssetNavigationProp = StackNavigationProp<
+type AssetNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CreateNewAsset"
 >;
@@ -33,7 +33,7 @@ export function Assets() {
   const [assets, setAssets] = useState<AssetType[]>([]);
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const navigation = useNavigation<CreateNewAssetNavigationProp>();
+  const navigation = useNavigation<AssetNavigationProp>();
   const { t } = useTranslation(["home"]);
   const theme = useTheme();
   const states = useAppSelector((state) => state.header);
@@ -42,7 +42,7 @@ export function Assets() {
 
   useEffect(() => {
     reload();
-  }, []);
+  }, [searchQuery]);
 
   const reload = () => {
     if (searchQuery.length > 0) {

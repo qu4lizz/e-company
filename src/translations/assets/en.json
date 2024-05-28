@@ -56,5 +56,7 @@
   "assetEmployeeRequired": "Asset Employee is required",
   "assetImageRequired": "Asset Image is required",
   "uploadPhoto": "Upload Photo",
-  "takePhoto": "Take Photo"
+  "takePhoto": "Take Photo",
+  "assetDetails": "Asset Details",
+  "createdAt": "Created At"
 }

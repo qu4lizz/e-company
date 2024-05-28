@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 export const createNewStyles = StyleSheet.create({
   container: {
@@ -200,5 +200,29 @@ export const cameraStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
+  },
+});
+
+export const assetDetails = StyleSheet.create({
+  container: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: 20,
+    gap: 20,
+  },
+  iconsHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    width: "100%",
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+    gap: 15,
   },
 });

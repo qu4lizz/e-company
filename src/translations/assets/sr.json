@@ -56,5 +56,7 @@
   "assetEmployeeRequired": "Vlasnik sredstva je obavezan",
   "assetImageRequired": "Slika sredstva je obavezna",
   "uploadPhoto": "Izaberi sliku",
-  "takePhoto": "Uslikaj"
+  "takePhoto": "Uslikaj",
+  "assetDetails": "Detalji o sredstvu",
+  "createdAt": "Kreirano"
 }

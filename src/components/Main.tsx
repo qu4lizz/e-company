@@ -15,6 +15,7 @@ import { initializeSettings } from "../reducers/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { Asset } from "../types/Asset";
 import { CreateNewAsset } from "./CreateNewAsset";
+import { AssetDetails } from "../screens/AssetDetails";
 
 export type RootStackParamList = {
   TabNavigator: {};
@@ -25,6 +26,9 @@ export type RootStackParamList = {
   CreateNewAsset: {
     reload: () => void;
     asset?: Asset;
+  };
+  AssetDetails: {
+    asset: Asset;
   };
 };
 
@@ -84,6 +88,16 @@ export function Main() {
                   }}
                   initialParams={{
                     reload: () => {},
+                    asset: undefined,
+                  }}
+                />
+                <Stack.Screen
+                  name="AssetDetails"
+                  component={AssetDetails}
+                  options={{
+                    title: t("assetDetails"),
+                  }}
+                  initialParams={{
                     asset: undefined,
                   }}
                 />

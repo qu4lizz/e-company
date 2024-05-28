@@ -4,18 +4,16 @@ import { Avatar, Text, useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { deleteEmployee } from "../db/employee";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { iconSize, singleItemStyles } from "../styles/styles";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./Main";
+import { useNavigation } from "@react-navigation/native";
 
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 20,
-    padding: 20,
-    paddingRight: 90,
-  },
-});
+type AssetNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "AssetDetails"
+>;
 
 interface AssetProps {
   asset: AssetType;
@@ -24,6 +22,7 @@ interface AssetProps {
 
 export function Asset({ asset, reload }: AssetProps) {
   const { t } = useTranslation(["home"]);
+  const navigation = useNavigation<AssetNavigationProp>();
   const theme = useTheme();
 
   const [isEditing, setEdit] = useState(false);
@@ -41,10 +40,10 @@ export function Asset({ asset, reload }: AssetProps) {
   return (
     <Pressable
       style={[
-        styles.container,
+        singleItemStyles.container,
         { backgroundColor: theme.colors.inverseOnSurface },
       ]}
-      onPress={() => console.log("press")}
+      onPress={() => navigation.navigate("AssetDetails", { asset })}
     >
       <View>
         {asset.image && (
@@ -56,12 +55,17 @@ export function Asset({ asset, reload }: AssetProps) {
           />
         )}
       </View>
-      <View>
+      <View style={[singleItemStyles.textFormat, { width: "50%" }]}>
         <Text variant="titleMedium" style={{ fontWeight: "700" }}>
           {asset?.name}
         </Text>
         <Text variant="bodyMedium">{asset?.description}</Text>
       </View>
+      <MaterialCommunityIcons
+        name="arrow-right"
+        size={iconSize}
+        color={theme.colors.primary}
+      />
     </Pressable>
   );
 }
