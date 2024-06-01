@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { Asset } from "../types/Asset";
 import { CreateNewAsset } from "./CreateNewAsset";
 import { AssetDetails } from "../screens/AssetDetails";
+import { AssetsOnLocation } from "../screens/AssetsOnLocation";
 
 export type RootStackParamList = {
   TabNavigator: {};
@@ -29,6 +30,9 @@ export type RootStackParamList = {
   };
   AssetDetails: {
     asset: Asset;
+  };
+  AssetsOnLocation: {
+    location_id: number;
   };
 };
 
@@ -110,6 +114,16 @@ export function Main() {
                   initialParams={{
                     reload: () => {},
                     location: undefined,
+                  }}
+                />
+                <Stack.Screen
+                  name="AssetsOnLocation"
+                  component={AssetsOnLocation}
+                  options={{
+                    title: t("assetsOnLocation"),
+                  }}
+                  initialParams={{
+                    location_id: undefined,
                   }}
                 />
               </Stack.Navigator>

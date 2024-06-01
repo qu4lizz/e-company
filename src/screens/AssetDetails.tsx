@@ -23,17 +23,22 @@ import { Location } from "../types/Location";
 import { getLocationById } from "../db/locations";
 import { getEmployeeById } from "../db/employee";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 type AssetDetailsProps = RouteProp<RootStackParamList, "AssetDetails">;
+
+type AssetsOnLocationProp = StackNavigationProp<
+  RootStackParamList,
+  "AssetsOnLocation"
+>;
 
 export function AssetDetails() {
   const route = useRoute<AssetDetailsProps>();
   const { asset } = route.params;
-  const navigation = useNavigation();
+  const navigation = useNavigation<AssetsOnLocationProp>();
 
   const { t } = useTranslation(["home"]);
   const theme = useTheme();
-  const dispatch = useAppDispatch();
 
   const [location, setLocation] = useState<Location>();
   const [employee, setEmployee] = useState<Employee>();
@@ -43,6 +48,12 @@ export function AssetDetails() {
 
     setEmployee(getEmployeeById(asset.employee_id));
   }, []);
+
+  const openAssetsOnLocation = () => {
+    navigation.navigate("AssetsOnLocation", {
+      location_id: asset.location_id,
+    });
+  };
 
   return (
     <ScrollView contentContainerStyle={assetDetails.container}>
@@ -110,7 +121,10 @@ export function AssetDetails() {
           <Text style={{ fontWeight: "bold" }}>{employee?.name}</Text>
         </Text>
         <View style={assetDetails.content}>
-          <Text variant="bodyLarge">{t("location")}:</Text>
+          <Text variant="bodyLarge">
+            {t("location")}:{" "}
+            <Text style={{ fontWeight: "bold" }}>{location?.name}</Text>
+          </Text>
           {location && (
             <View style={mapStyles.container}>
               <MapView
@@ -128,7 +142,7 @@ export function AssetDetails() {
                     latitude: location?.latitude || 0,
                     longitude: location?.longitude || 0,
                   }}
-                  onPress={() => console.log("marker")}
+                  onPress={openAssetsOnLocation}
                 />
               </MapView>
             </View>

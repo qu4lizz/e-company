@@ -366,7 +366,10 @@ export function CreateNewAsset() {
               />
               <Pressable
                 onPress={() => setIsScanning(true)}
-                style={singleItemStyles.icons}
+                style={[
+                  singleItemStyles.icons,
+                  { borderColor: theme.colors.outline },
+                ]}
               >
                 <MaterialCommunityIcons
                   name="barcode-scan"

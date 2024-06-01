@@ -30,6 +30,14 @@ export const getById = async (id: number): Promise<Asset> => {
   return allRows[0];
 };
 
+export const getAssetsByLocationId = async (
+  location_id: number
+): Promise<Asset[]> => {
+  return db.getAllAsync("SELECT * FROM asset WHERE location_id = ?;", [
+    location_id,
+  ]);
+};
+
 export const getAssetsByName = async (name: string): Promise<Asset[]> => {
   const allRows: Asset[] = await db.getAllAsync(
     "SELECT * FROM asset WHERE LOWER(name) LIKE LOWER('%' || ? || '%');",

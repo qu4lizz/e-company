@@ -58,5 +58,6 @@
   "uploadPhoto": "Upload Photo",
   "takePhoto": "Take Photo",
   "assetDetails": "Asset Details",
-  "createdAt": "Created At"
+  "createdAt": "Created At",
+  "assetsOnLocation": "Assets on Location"
 }

@@ -7,26 +7,21 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { useTranslation } from "react-i18next";
 import { Modal, Portal, Searchbar, useTheme } from "react-native-paper";
-import { CreateNewAsset } from "../components/CreateNewAsset";
 import { setHeader } from "../reducers/headerSlice";
-import { modalStyles, searchbarStyles } from "../styles/styles";
+import {
+  modalStyles,
+  searchbarStyles,
+  itemsContainerStyles,
+} from "../styles/styles";
 import { FilterAssets } from "../components/FilterAssets";
 import { ItemSeparator } from "../components/ItemSeparator";
 import { RootStackParamList } from "../components/Main";
 import { StackNavigationProp } from "@react-navigation/stack";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-});
-
 type AssetNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "CreateNewAsset"
+  "CreateNewAsset",
+  "AssetsOnLocation"
 >;
 
 export function Assets() {
@@ -68,7 +63,7 @@ export function Assets() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={itemsContainerStyles.container}>
       <Portal>
         <Modal
           visible={isFocused && (states.filter || states.add)}

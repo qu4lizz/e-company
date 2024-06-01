@@ -58,5 +58,6 @@
   "uploadPhoto": "Izaberi sliku",
   "takePhoto": "Uslikaj",
   "assetDetails": "Detalji o sredstvu",
-  "createdAt": "Kreirano"
+  "createdAt": "Kreirano",
+  "assetsOnLocation": "Sredstva na lokaciji"
 }
