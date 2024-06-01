@@ -59,5 +59,6 @@
   "takePhoto": "Take Photo",
   "assetDetails": "Asset Details",
   "createdAt": "Created At",
-  "assetsOnLocation": "Assets on Location"
+  "assetsOnLocation": "Assets on Location",
+  "dateOfCreation": "Date of Creation"
 }

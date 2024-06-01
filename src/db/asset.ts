@@ -38,6 +38,14 @@ export const getAssetsByLocationId = async (
   ]);
 };
 
+export const getAssetsByStartDate = async (isBefore: boolean, date: Date) => {
+  const allRows: Asset[] = await db.getAllAsync(
+    "SELECT * FROM asset WHERE created_at " + (isBefore ? "<" : ">=") + " ?;",
+    [date.toISOString()]
+  );
+  return allRows;
+};
+
 export const getAssetsByName = async (name: string): Promise<Asset[]> => {
   const allRows: Asset[] = await db.getAllAsync(
     "SELECT * FROM asset WHERE LOWER(name) LIKE LOWER('%' || ? || '%');",

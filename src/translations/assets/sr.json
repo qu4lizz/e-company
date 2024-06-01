@@ -59,5 +59,6 @@
   "takePhoto": "Uslikaj",
   "assetDetails": "Detalji o sredstvu",
   "createdAt": "Kreirano",
-  "assetsOnLocation": "Sredstva na lokaciji"
+  "assetsOnLocation": "Sredstva na lokaciji",
+  "dateOfCreation": "Datum kreiranja"
 }

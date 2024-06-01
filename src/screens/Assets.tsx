@@ -26,7 +26,7 @@ type AssetNavigationProp = StackNavigationProp<
 
 export function Assets() {
   const [assets, setAssets] = useState<AssetType[]>([]);
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const navigation = useNavigation<AssetNavigationProp>();
   const { t } = useTranslation(["home"]);
@@ -62,6 +62,11 @@ export function Assets() {
     dispatch(await setHeader("falsifyAll"));
   };
 
+  const reloadByFilter = async (assets: AssetType[]) => {
+    setAssets(assets);
+    dispatchFalse();
+  };
+
   return (
     <View style={itemsContainerStyles.container}>
       <Portal>
@@ -77,7 +82,7 @@ export function Assets() {
         >
           <View>
             <ScrollView>
-              {states.filter && <FilterAssets setAssets={setAssets} />}
+              {states.filter && <FilterAssets setAssets={reloadByFilter} />}
             </ScrollView>
           </View>
         </Modal>
