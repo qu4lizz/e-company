@@ -1,5 +1,6 @@
 import {
   RouteProp,
+  useIsFocused,
   useNavigation,
   useRoute,
   useTheme,
@@ -24,69 +25,86 @@ import { getLocationById } from "../db/locations";
 import { getEmployeeById } from "../db/employee";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { deleteAsset } from "../db/asset";
 import { AreYouSure } from "../components/AreYouSure";
+import { Asset } from "../types/Asset";
+import { getAssetById } from "../db/asset";
 
 type AssetDetailsProps = RouteProp<RootStackParamList, "AssetDetails">;
 
-type AssetsOnLocationProp = StackNavigationProp<
+type AssetProp = StackNavigationProp<
   RootStackParamList,
-  "AssetsOnLocation"
+  "AssetsOnLocation",
+  "CreateNewAsset"
 >;
 
 export function AssetDetails() {
   const route = useRoute<AssetDetailsProps>();
-  const { asset, onDelete } = route.params;
-  const navigation = useNavigation<AssetsOnLocationProp>();
+  const { asset, onDelete, reload } = route.params;
+  const navigation = useNavigation<AssetProp>();
 
   const { t } = useTranslation(["home"]);
   const theme = useTheme();
+  const isFocused = useIsFocused();
 
+  const [assetObj, setAssetObj] = useState<Asset>(asset);
   const [location, setLocation] = useState<Location>();
   const [employee, setEmployee] = useState<Employee>();
 
   const [isDeleting, setDelete] = useState(false);
 
   useEffect(() => {
-    setLocation(getLocationById(asset.location_id));
+    if (isFocused) {
+      const fetchAsset = async () => {
+        const assetData = await getAssetById(asset.id!);
+        setAssetObj(assetData);
 
-    setEmployee(getEmployeeById(asset.employee_id));
-  }, []);
+        const locationData = await getLocationById(assetData.location_id);
+        const employeeData = await getEmployeeById(assetData.employee_id);
+
+        setLocation(locationData);
+        setEmployee(employeeData);
+      };
+
+      fetchAsset();
+    }
+  }, [isFocused, asset]);
 
   const openAssetsOnLocation = () => {
     navigation.navigate("AssetsOnLocation", {
-      location_id: asset.location_id,
+      location_id: assetObj.location_id,
+    });
+  };
+
+  const onEdit = () => {
+    navigation.navigate("CreateNewAsset", {
+      reload,
+      asset: assetObj,
     });
   };
 
   return (
     <ScrollView contentContainerStyle={assetDetails.container}>
-      {isDeleting && (
-        <Portal>
-          <Modal
-            visible={isDeleting}
-            onDismiss={() => setDelete(false)}
-            contentContainerStyle={[
-              modalStyles.container,
-              { backgroundColor: theme.colors.background },
-            ]}
-          >
-            <ScrollView>
-              <AreYouSure
-                onDelete={onDelete}
-                onCancel={() => setDelete(false)}
-              />
-            </ScrollView>
-          </Modal>
-        </Portal>
-      )}
+      <Portal>
+        <Modal
+          visible={isDeleting}
+          onDismiss={() => setDelete(false)}
+          contentContainerStyle={[
+            modalStyles.container,
+            { backgroundColor: theme.colors.background },
+          ]}
+        >
+          <ScrollView>
+            <AreYouSure onDelete={onDelete} onCancel={() => setDelete(false)} />
+          </ScrollView>
+        </Modal>
+      </Portal>
       <View style={assetDetails.iconsHeader}>
         <Pressable
           style={[
             { borderColor: theme.colors.primary },
             singleItemStyles.icons,
           ]}
-          onPress={() => console.log("ed")}
+          onPress={onEdit}
         >
           <MaterialCommunityIcons
             name="pencil-outline"
@@ -110,33 +128,34 @@ export function AssetDetails() {
       </View>
       <View style={assetDetails.content}>
         <Text variant="titleLarge">
-          {t("name")}: <Text style={{ fontWeight: "bold" }}>{asset.name}</Text>
+          {t("name")}:{" "}
+          <Text style={{ fontWeight: "bold" }}>{assetObj.name}</Text>
         </Text>
-        {asset.image && (
+        {assetObj.image && (
           <Avatar.Image
             size={256}
             source={{
-              uri: `data:image/jpeg;base64,${asset.image}`,
+              uri: `data:image/jpeg;base64,${assetObj.image}`,
             }}
           />
         )}
 
         <Text variant="bodyLarge">
           {t("description")}:{" "}
-          <Text style={{ fontWeight: "bold" }}>{asset.description}</Text>
+          <Text style={{ fontWeight: "bold" }}>{assetObj.description}</Text>
         </Text>
         <Text variant="bodyLarge">
           {t("barcode")}:{" "}
-          <Text style={{ fontWeight: "bold" }}>{asset.barcode}</Text>
+          <Text style={{ fontWeight: "bold" }}>{assetObj.barcode}</Text>
         </Text>
         <Text variant="bodyLarge">
           {t("price")}:{" "}
-          <Text style={{ fontWeight: "bold" }}>{asset.price}</Text>
+          <Text style={{ fontWeight: "bold" }}>{assetObj.price}</Text>
         </Text>
         <Text variant="bodyLarge">
           {t("createdAt")}:{" "}
           <Text style={{ fontWeight: "bold" }}>
-            {formatDate(asset.created_at!, "datetime")}
+            {formatDate(assetObj.created_at!, "datetime")}
           </Text>
         </Text>
         <Text variant="bodyLarge">

@@ -60,5 +60,6 @@
   "assetDetails": "Asset Details",
   "createdAt": "Created At",
   "assetsOnLocation": "Assets on Location",
-  "dateOfCreation": "Date of Creation"
+  "dateOfCreation": "Date of Creation",
+  "editAsset": "Edit Asset"
 }

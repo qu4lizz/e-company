@@ -60,5 +60,6 @@
   "assetDetails": "Detalji o sredstvu",
   "createdAt": "Kreirano",
   "assetsOnLocation": "Sredstva na lokaciji",
-  "dateOfCreation": "Datum kreiranja"
+  "dateOfCreation": "Datum kreiranja",
+  "editAsset": "Izmijeni sredstvo"
 }

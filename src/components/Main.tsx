@@ -31,6 +31,7 @@ export type RootStackParamList = {
   AssetDetails: {
     asset: Asset;
     onDelete: () => void;
+    reload: () => void;
   };
   AssetsOnLocation: {
     location_id: number;
@@ -104,6 +105,8 @@ export function Main() {
                   }}
                   initialParams={{
                     asset: undefined,
+                    onDelete: () => {},
+                    reload: () => {},
                   }}
                 />
                 <Stack.Screen

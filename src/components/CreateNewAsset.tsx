@@ -43,6 +43,10 @@ export function CreateNewAsset() {
   const [employees, setEmployees] = useState<any>([]);
 
   useEffect(() => {
+    navigation.setOptions({
+      title: editing ? t("editAsset") : t("createNewAsset"),
+    });
+
     getLocations().then((res) => {
       setLocations(res);
     });
@@ -73,7 +77,7 @@ export function CreateNewAsset() {
     setLoading(true);
 
     if (editing) {
-      updateAsset({
+      const obj = {
         id: asset!.id,
         name: form.values.name,
         description: form.values.description,
@@ -82,15 +86,15 @@ export function CreateNewAsset() {
         location_id: form.values.location!.id!,
         employee_id: form.values.employee!.id!,
         image: form.values.image as string,
-      })
-        .then(async () => {
+      };
+      updateAsset(obj)
+        .then(() => {
           reload();
         })
         .finally(() => {
           setLoading(false);
           navigation.goBack();
         });
-      return;
     } else {
       const created_at = new Date().toISOString();
 

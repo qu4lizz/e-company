@@ -35,7 +35,9 @@ export function Asset({ asset, reload }: AssetProps) {
         singleItemStyles.container,
         { backgroundColor: theme.colors.inverseOnSurface },
       ]}
-      onPress={() => navigation.navigate("AssetDetails", { asset, onDelete })}
+      onPress={() =>
+        navigation.navigate("AssetDetails", { asset, onDelete, reload })
+      }
     >
       <View>
         {asset.image && (

@@ -22,7 +22,7 @@ export const getAssets = async (): Promise<Asset[]> => {
   return allRows;
 };
 
-export const getById = async (id: number): Promise<Asset> => {
+export const getAssetById = async (id: number): Promise<Asset> => {
   const allRows: Asset[] = await db.getAllAsync(
     "SELECT * FROM asset WHERE id = ?;",
     [id]
