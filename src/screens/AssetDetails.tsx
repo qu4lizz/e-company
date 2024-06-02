@@ -6,16 +6,16 @@ import {
 } from "@react-navigation/native";
 import { RootStackParamList } from "../components/Main";
 import { useTranslation } from "react-i18next";
-import { useAppDispatch } from "../reducers/store";
 import { Pressable, ScrollView, View } from "react-native";
 import {
   assetDetails,
   iconSize,
   mapStyles,
+  modalStyles,
   singleItemStyles,
 } from "../styles/styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Avatar, Text } from "react-native-paper";
+import { Avatar, Modal, Portal, Text } from "react-native-paper";
 import { formatDate } from "../utils/utils";
 import { useEffect, useState } from "react";
 import { Employee } from "../types/Employee";
@@ -24,6 +24,8 @@ import { getLocationById } from "../db/locations";
 import { getEmployeeById } from "../db/employee";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { deleteAsset } from "../db/asset";
+import { AreYouSure } from "../components/AreYouSure";
 
 type AssetDetailsProps = RouteProp<RootStackParamList, "AssetDetails">;
 
@@ -34,7 +36,7 @@ type AssetsOnLocationProp = StackNavigationProp<
 
 export function AssetDetails() {
   const route = useRoute<AssetDetailsProps>();
-  const { asset } = route.params;
+  const { asset, onDelete } = route.params;
   const navigation = useNavigation<AssetsOnLocationProp>();
 
   const { t } = useTranslation(["home"]);
@@ -42,6 +44,8 @@ export function AssetDetails() {
 
   const [location, setLocation] = useState<Location>();
   const [employee, setEmployee] = useState<Employee>();
+
+  const [isDeleting, setDelete] = useState(false);
 
   useEffect(() => {
     setLocation(getLocationById(asset.location_id));
@@ -57,6 +61,25 @@ export function AssetDetails() {
 
   return (
     <ScrollView contentContainerStyle={assetDetails.container}>
+      {isDeleting && (
+        <Portal>
+          <Modal
+            visible={isDeleting}
+            onDismiss={() => setDelete(false)}
+            contentContainerStyle={[
+              modalStyles.container,
+              { backgroundColor: theme.colors.background },
+            ]}
+          >
+            <ScrollView>
+              <AreYouSure
+                onDelete={onDelete}
+                onCancel={() => setDelete(false)}
+              />
+            </ScrollView>
+          </Modal>
+        </Portal>
+      )}
       <View style={assetDetails.iconsHeader}>
         <Pressable
           style={[
@@ -76,7 +99,7 @@ export function AssetDetails() {
             { borderColor: theme.colors.primary },
             singleItemStyles.icons,
           ]}
-          onPress={() => console.log("del")}
+          onPress={() => setDelete(true)}
         >
           <MaterialCommunityIcons
             name="trash-can-outline"

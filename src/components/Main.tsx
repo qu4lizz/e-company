@@ -30,6 +30,7 @@ export type RootStackParamList = {
   };
   AssetDetails: {
     asset: Asset;
+    onDelete: () => void;
   };
   AssetsOnLocation: {
     location_id: number;
