@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { createNewStyles, radioStyles } from "../styles/styles";
 import { Button, RadioButton, Text } from "react-native-paper";
 import { useState } from "react";
-import { getAssetsByStartDate } from "../db/asset";
+import { getAssetsByStartDate } from "../db/assets";
 import { DatePickerInput } from "react-native-paper-dates";
 
 interface Props {

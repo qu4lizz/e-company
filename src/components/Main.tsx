@@ -7,16 +7,18 @@ import { registerTranslation, enGB } from "react-native-paper-dates";
 import { CombinedDefaultTheme, CombinedDarkTheme } from "../themes";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TabNavigator } from "./TabNavigator";
-import { CreateNewLocation } from "./CreateNewLocation";
+import { CreateNewLocation } from "../screens/CreateNewLocation";
 import { Location } from "../types/Location";
 import { PaperProvider } from "react-native-paper";
 import { Fallback } from "../screens/Fallback";
 import { initializeSettings } from "../reducers/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { Asset } from "../types/Asset";
-import { CreateNewAsset } from "./CreateNewAsset";
+import { CreateNewAsset } from "../screens/CreateNewAsset";
 import { AssetDetails } from "../screens/AssetDetails";
 import { AssetsOnLocation } from "../screens/AssetsOnLocation";
+import { InventoryList } from "../types/InventoryList";
+import { CreateNewInventoryList } from "../screens/CreateNewInventoryList";
 
 export type RootStackParamList = {
   TabNavigator: {};
@@ -35,6 +37,15 @@ export type RootStackParamList = {
   };
   AssetsOnLocation: {
     location_id: number;
+  };
+  CreateNewInventoryList: {
+    reload: () => void;
+    inventoryList?: InventoryList;
+  };
+  InventoryListDetails: {
+    inventoryListId: number;
+    onDelete: () => void;
+    reload: () => void;
   };
 };
 
@@ -128,6 +139,29 @@ export function Main() {
                   }}
                   initialParams={{
                     location_id: undefined,
+                  }}
+                />
+                <Stack.Screen
+                  name="CreateNewInventoryList"
+                  component={CreateNewInventoryList}
+                  options={{
+                    title: t("createNewInventoryList"),
+                  }}
+                  initialParams={{
+                    reload: () => {},
+                    inventoryList: undefined,
+                  }}
+                />
+                <Stack.Screen
+                  name="InventoryListDetails"
+                  component={AssetDetails}
+                  options={{
+                    title: t("inventoryListDetails"),
+                  }}
+                  initialParams={{
+                    inventoryListId: undefined,
+                    onDelete: () => {},
+                    reload: () => {},
                   }}
                 />
               </Stack.Navigator>

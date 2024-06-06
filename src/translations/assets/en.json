@@ -1,6 +1,7 @@
 {
   "dateFormat": "en-GB",
   "assets": "Assets",
+  "asset": "Asset",
   "employees": "Employees",
   "settings": "Settings",
   "locations": "Locations",
@@ -61,5 +62,16 @@
   "createdAt": "Created At",
   "assetsOnLocation": "Assets on Location",
   "dateOfCreation": "Date of Creation",
-  "editAsset": "Edit Asset"
+  "editAsset": "Edit Asset",
+  "createNewInventoryList": "Create New Inventory List",
+  "inventoryListDetails": "Inventory List Details",
+  "addAsset": "Add Assets",
+  "assetRequired": "Asset is required",
+  "currentLocation": "Current Location",
+  "currentEmployee": "Current Owner",
+  "newLocation": "New Location",
+  "newEmployee": "New Owner",
+  "locationRequired": "Lokacija je obavezna",
+  "employeeRequired": "Vlasnik je obavezan",
+  "assetName": "Asset Name"
 }

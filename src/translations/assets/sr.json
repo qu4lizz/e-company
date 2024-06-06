@@ -1,6 +1,7 @@
 {
   "dateFormat": "sr",
   "assets": "Osnovna sredstva",
+  "asset": "Osnovno sredstvo",
   "employees": "Zaposleni",
   "settings": "Podešavanja",
   "locations": "Lokacije",
@@ -61,5 +62,16 @@
   "createdAt": "Kreirano",
   "assetsOnLocation": "Sredstva na lokaciji",
   "dateOfCreation": "Datum kreiranja",
-  "editAsset": "Izmijeni sredstvo"
+  "editAsset": "Izmijeni sredstvo",
+  "createNewInventoryList": "Kreiraj novu popisnu listu",
+  "inventoryListDetails": "Detalji o popisnoj listi",
+  "addAsset": "Dodaj sredstvo",
+  "assetRequired": "Sredstvo je obavezno",
+  "currentLocation": "Trenutna lokacija",
+  "currentEmployee": "Trenutni vlasnik",
+  "newLocation": "Nova lokacija",
+  "newEmployee": "Novi vlasnik",
+  "locationRequired": "Lokacija je obavezna",
+  "employeeRequired": "Vlasnik je obavezan",
+  "assetName": "Naziv sredstva"
 }

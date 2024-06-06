@@ -6,7 +6,7 @@ import { iconSize, singleItemStyles } from "../styles/styles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "./Main";
 import { useNavigation } from "@react-navigation/native";
-import { deleteAsset } from "../db/asset";
+import { deleteAsset } from "../db/assets";
 
 type AssetNavigationProp = StackNavigationProp<
   RootStackParamList,

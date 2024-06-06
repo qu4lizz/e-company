@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const createNewStyles = StyleSheet.create({
   container: {
@@ -6,6 +6,13 @@ export const createNewStyles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     marginTop: 10,
+    alignItems: "center",
+    gap: 20,
+    width: "100%",
+  },
+  container2: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
     alignItems: "center",
     gap: 20,
     width: "100%",
@@ -224,5 +231,33 @@ export const assetDetails = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     gap: 15,
+  },
+});
+
+export const headerStyles = StyleSheet.create({
+  container: {
+    height: "100%",
+    display: "flex",
+    flexGrow: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  button: {
+    height: "100%",
+    width: 70,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+export const buttonStyles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
   },
 });

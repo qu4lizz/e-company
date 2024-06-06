@@ -27,7 +27,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AreYouSure } from "../components/AreYouSure";
 import { Asset } from "../types/Asset";
-import { getAssetById } from "../db/asset";
+import { getAssetById } from "../db/assets";
 
 type AssetDetailsProps = RouteProp<RootStackParamList, "AssetDetails">;
 

@@ -12,7 +12,7 @@ import { Button, Text, TextInput } from "react-native-paper";
 import mapCenter from "../../assets/mapCenter.json";
 import { getAddressFromCoordinates } from "../utils/utils";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { RootStackParamList } from "./Main";
+import { RootStackParamList } from "../components/Main";
 
 type CreateNewLocationRouteProp = RouteProp<
   RootStackParamList,

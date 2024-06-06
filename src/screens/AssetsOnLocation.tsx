@@ -7,7 +7,7 @@ import { ItemSeparator } from "../components/ItemSeparator";
 import { Asset } from "../components/Asset";
 import { useEffect, useState } from "react";
 import { Asset as AssetType } from "../types/Asset";
-import { getAssetsByLocationId } from "../db/asset";
+import { getAssetsByLocationId } from "../db/assets";
 
 type AssetsOnLocationProps = RouteProp<RootStackParamList, "AssetsOnLocation">;
 

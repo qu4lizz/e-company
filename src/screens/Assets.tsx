@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, ScrollView } from "react-native";
+import { View, FlatList, ScrollView } from "react-native";
 import { Asset } from "../components/Asset";
 import { Asset as AssetType } from "../types/Asset";
-import { getAssets, getAssetsByName } from "../db/asset";
+import { getAssets, getAssetsByName } from "../db/assets";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../reducers/store";
 import { useTranslation } from "react-i18next";
@@ -71,7 +71,7 @@ export function Assets() {
     <View style={itemsContainerStyles.container}>
       <Portal>
         <Modal
-          visible={isFocused && (states.filter || states.add)}
+          visible={isFocused && states.filter}
           onDismiss={async () => {
             await dispatch(await setHeader("falsifyAll"));
           }}

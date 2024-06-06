@@ -3,28 +3,19 @@ import * as yup from "yup";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../reducers/store";
 import { useEffect, useState } from "react";
-import { createAsset, updateAsset } from "../db/asset";
+import { createAsset, updateAsset } from "../db/assets";
 import { setHeader } from "../reducers/headerSlice";
 import { Pressable, View } from "react-native";
-import {
-  cameraStyles,
-  selectStyles,
-  singleItemStyles,
-  createNewStyles as styles,
-} from "../styles/styles";
+import { cameraStyles, createNewStyles as styles } from "../styles/styles";
 import { Avatar, Button, Text, TextInput, useTheme } from "react-native-paper";
 import { getLocationById, getLocations } from "../db/locations";
 import { getEmployeeById, getEmployees } from "../db/employee";
-import { Dropdown } from "react-native-element-dropdown";
 import * as ImagePicker from "expo-image-picker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-  BarcodeScanningResult,
-  CameraView,
-  useCameraPermissions,
-} from "expo-camera";
+import { BarcodeScanningResult, CameraView } from "expo-camera";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { RootStackParamList } from "./Main";
+import { RootStackParamList } from "../components/Main";
+import { Select } from "../components/Select";
+import { BarcodeScanner } from "../components/BarcodeScanner";
 
 type CreateNewAssetRouteProp = RouteProp<RootStackParamList, "CreateNewAsset">;
 
@@ -135,39 +126,6 @@ export function CreateNewAsset() {
     onSubmit,
   });
 
-  const [isLocationSelectFocused, setIsLocationSelectFocused] = useState(false);
-  const [isEmployeeSelectFocused, setIsEmployeeSelectFocused] = useState(false);
-
-  const renderLocationLabel = () => {
-    if (form.values.location || isLocationSelectFocused) {
-      return renderText(t("location"), isLocationSelectFocused);
-    }
-    return null;
-  };
-  const renderEmployeeLabel = () => {
-    if (form.values.employee || isEmployeeSelectFocused) {
-      return renderText(t("employee"), isEmployeeSelectFocused);
-    }
-    return null;
-  };
-  const renderText = (text: string, isFocused: boolean) => {
-    return (
-      <Text
-        style={[
-          selectStyles.label,
-          isFocused && {
-            color: theme.colors.primary,
-          },
-          {
-            backgroundColor: theme.colors.background,
-          },
-        ]}
-      >
-        {text}
-      </Text>
-    );
-  };
-
   const uploadPhoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -196,16 +154,7 @@ export function CreateNewAsset() {
     }
   };
 
-  const [permission, requestPermission] = useCameraPermissions();
   const [isScanning, setIsScanning] = useState(false);
-  useEffect(() => {
-    if (isScanning) {
-      async () => {
-        const { granted } = await requestPermission();
-        console.log("granted:", granted);
-      };
-    }
-  }, [isScanning]);
 
   const onBarcodeScanned = async (data: BarcodeScanningResult) => {
     form.setFieldValue("barcode", data.data);
@@ -229,112 +178,26 @@ export function CreateNewAsset() {
               <Text>{form.errors.name}</Text>
             )}
           </View>
-          <View style={selectStyles.container}>
-            {renderLocationLabel()}
-            <Dropdown
-              style={[
-                selectStyles.dropdown,
-                { backgroundColor: theme.colors.background },
-                isLocationSelectFocused
-                  ? { borderColor: theme.colors.primary, borderWidth: 2 }
-                  : { borderColor: theme.colors.outline },
-                form.touched.location && form.errors.location
-                  ? { borderColor: theme.colors.error, borderWidth: 2 }
-                  : null,
-              ]}
-              placeholderStyle={[
-                selectStyles.placeholderStyle,
-                { color: theme.colors.onSurfaceVariant },
-              ]}
-              selectedTextStyle={[
-                selectStyles.selectedTextStyle,
-                { color: theme.colors.onSurface },
-              ]}
-              itemTextStyle={{
-                color: theme.colors.onSurfaceVariant,
-                backgroundColor: theme.colors.background,
-              }}
-              itemContainerStyle={{
-                backgroundColor: theme.colors.background,
-              }}
-              inputSearchStyle={[
-                selectStyles.inputSearchStyle,
-                {
-                  backgroundColor: theme.colors.background,
-                  color: theme.colors.onSurface,
-                },
-              ]}
-              search
-              maxHeight={300}
-              data={locations}
-              placeholder={isLocationSelectFocused ? "" : t("location")}
-              onFocus={() => setIsLocationSelectFocused(true)}
-              onBlur={() => setIsLocationSelectFocused(false)}
-              labelField="name"
-              valueField="id"
-              value={form.values.location?.id}
-              onChange={(item) => {
-                form.setFieldValue("location", item);
-                setIsLocationSelectFocused(false);
-              }}
-            />
-            {form.touched.location && form.errors.location && (
-              <Text>{form.errors.location}</Text>
-            )}
-          </View>
-          <View style={selectStyles.container}>
-            {renderEmployeeLabel()}
-            <Dropdown
-              style={[
-                selectStyles.dropdown,
-                { backgroundColor: theme.colors.background },
-                isEmployeeSelectFocused
-                  ? { borderColor: theme.colors.primary, borderWidth: 2 }
-                  : { borderColor: theme.colors.outline },
-                form.touched.employee && form.errors.employee
-                  ? { borderColor: theme.colors.error, borderWidth: 2 }
-                  : null,
-              ]}
-              placeholderStyle={[
-                selectStyles.placeholderStyle,
-                { color: theme.colors.onSurfaceVariant },
-              ]}
-              selectedTextStyle={[
-                selectStyles.selectedTextStyle,
-                { color: theme.colors.onSurface },
-              ]}
-              itemTextStyle={{
-                color: theme.colors.onSurfaceVariant,
-                backgroundColor: theme.colors.background,
-              }}
-              itemContainerStyle={{
-                backgroundColor: theme.colors.background,
-              }}
-              inputSearchStyle={[
-                selectStyles.inputSearchStyle,
-                {
-                  backgroundColor: theme.colors.background,
-                  color: theme.colors.onSurface,
-                },
-              ]}
-              search
-              maxHeight={300}
-              data={employees}
-              placeholder={isEmployeeSelectFocused ? "" : t("employee")}
-              onFocus={() => setIsEmployeeSelectFocused(true)}
-              onBlur={() => setIsEmployeeSelectFocused(false)}
-              labelField="name"
-              valueField="id"
-              value={form.values.employee?.id}
-              onChange={(item) => {
-                form.setFieldValue("employee", item);
-                setIsEmployeeSelectFocused(false);
-              }}
-            />
-            {form.touched.employee && form.errors.employee && (
-              <Text>{form.errors.employee}</Text>
-            )}
-          </View>
+          <Select
+            text={t("location")}
+            fieldValueName="location"
+            data={locations}
+            showError={form.touched.location && !!form.errors.location}
+            error={form.errors.location}
+            value={form.values.location}
+            setValue={form.setFieldValue}
+            id={form.values.location?.id}
+          />
+          <Select
+            text={t("employee")}
+            fieldValueName="employee"
+            data={employees}
+            showError={form.touched.employee && !!form.errors.employee}
+            error={form.errors.employee}
+            value={form.values.employee}
+            setValue={form.setFieldValue}
+            id={form.values.employee?.id}
+          />
           <View style={styles.inputView}>
             <TextInput
               style={{ width: "100%" }}
@@ -368,19 +231,10 @@ export function CreateNewAsset() {
                 onChangeText={form.handleChange("barcode")}
                 error={form.touched.barcode && !!form.errors.barcode}
               />
-              <Pressable
-                onPress={() => setIsScanning(true)}
-                style={[
-                  singleItemStyles.icons,
-                  { borderColor: theme.colors.outline },
-                ]}
-              >
-                <MaterialCommunityIcons
-                  name="barcode-scan"
-                  size={36}
-                  color={theme.colors.primary}
-                />
-              </Pressable>
+              <BarcodeScanner
+                setIsScanning={setIsScanning}
+                isScanning={isScanning}
+              />
             </View>
             {form.touched.barcode && form.errors.barcode && (
               <Text>{form.errors.barcode}</Text>
