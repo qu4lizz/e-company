@@ -19,6 +19,7 @@ import { AssetDetails } from "../screens/AssetDetails";
 import { AssetsOnLocation } from "../screens/AssetsOnLocation";
 import { InventoryList } from "../types/InventoryList";
 import { CreateNewInventoryList } from "../screens/CreateNewInventoryList";
+import { InventoryListDetails } from "../screens/InventoryListDetails";
 
 export type RootStackParamList = {
   TabNavigator: {};
@@ -154,7 +155,7 @@ export function Main() {
                 />
                 <Stack.Screen
                   name="InventoryListDetails"
-                  component={AssetDetails}
+                  component={InventoryListDetails}
                   options={{
                     title: t("inventoryListDetails"),
                   }}

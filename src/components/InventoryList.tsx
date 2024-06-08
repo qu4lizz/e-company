@@ -29,7 +29,6 @@ export function InventoryList({ inventoryList, reload }: Props) {
   const onDelete = () => {
     deleteInventoryList(inventoryList.id!).then(() => {
       reload();
-      navigation.goBack();
     });
   };
 

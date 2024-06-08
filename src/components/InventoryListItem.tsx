@@ -6,13 +6,19 @@ import { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { AreYouSure } from "./AreYouSure";
 import { Text } from "react-native-paper";
+import { InventoryListItemDetails } from "../types/InventoryListItem";
 
 interface Props {
-  inventoryListItem: any;
+  inventoryListItem?: any;
   onDelete: any;
+  inventoryListItemFormatted?: InventoryListItemDetails;
 }
 
-export function InventoryListItem({ inventoryListItem, onDelete }: Props) {
+export function InventoryListItem({
+  inventoryListItem,
+  onDelete,
+  inventoryListItemFormatted,
+}: Props) {
   const theme = useTheme();
   const { t } = useTranslation(["home"]);
 
@@ -48,31 +54,41 @@ export function InventoryListItem({ inventoryListItem, onDelete }: Props) {
         <Text variant="titleMedium">
           {t("assetName")}:{" "}
           <Text style={{ fontWeight: "bold" }}>
-            {inventoryListItem.asset.name}
+            {inventoryListItem
+              ? inventoryListItem.asset.name
+              : inventoryListItemFormatted?.asset.name}
           </Text>
         </Text>
         <Text variant="titleMedium">
           {t("currentLocation")}:{" "}
           <Text style={{ fontWeight: "bold" }}>
-            {inventoryListItem.asset.location.name}
+            {inventoryListItem
+              ? inventoryListItem.asset.location.name
+              : inventoryListItemFormatted?.current_location.name}
           </Text>
         </Text>
         <Text variant="titleMedium">
           {t("newLocation")}:{" "}
           <Text style={{ fontWeight: "bold" }}>
-            {inventoryListItem.newLocation.name}
+            {inventoryListItem
+              ? inventoryListItem.newLocation.name
+              : inventoryListItemFormatted?.new_location.name}
           </Text>
         </Text>
         <Text variant="titleMedium">
           {t("currentEmployee")}:{" "}
           <Text style={{ fontWeight: "bold" }}>
-            {inventoryListItem.asset.employee.name}
+            {inventoryListItem
+              ? inventoryListItem.asset.employee.name
+              : inventoryListItemFormatted?.current_employee.name}
           </Text>
         </Text>
         <Text variant="titleMedium">
           {t("newEmployee")}:{" "}
           <Text style={{ fontWeight: "bold" }}>
-            {inventoryListItem.newEmployee.name}
+            {inventoryListItem
+              ? inventoryListItem.newEmployee.name
+              : inventoryListItemFormatted?.new_employee.name}
           </Text>
         </Text>
       </View>

@@ -261,3 +261,14 @@ export const buttonStyles = StyleSheet.create({
     gap: 10,
   },
 });
+
+export const inventoryDetails = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 10,
+    margin: 20,
+  },
+});

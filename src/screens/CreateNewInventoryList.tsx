@@ -94,9 +94,9 @@ export function CreateNewInventoryList() {
             const obj = {
               inventory_list_id: res,
               asset_id: a.asset.id,
-              current_employee_id: a.currentEmployee?.id,
+              current_employee_id: a.asset.employee.id,
               new_employee_id: a.newEmployee?.id,
-              current_location_id: a.currentLocation?.id,
+              current_location_id: a.asset.location.id,
               new_location_id: a.newLocation?.id,
             };
             createInventoryListItem(obj);
