@@ -23,6 +23,7 @@ import { ItemSeparator } from "../components/ItemSeparator";
 import { InventoryList } from "../components/InventoryList";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../components/Main";
+import FilterInventoryLists from "../components/FilterInventoryLists";
 
 type InventoryListProp = StackNavigationProp<
   RootStackParamList,
@@ -67,6 +68,11 @@ export function InventoryLists() {
     dispatch(await setHeader("falsifyAll"));
   };
 
+  const reloadByFilter = async (inventoryLists: InventoryListType[]) => {
+    setInventoryLists(inventoryLists);
+    dispatchFalse();
+  };
+
   return (
     <View style={itemsContainerStyles.container}>
       <Portal>
@@ -82,7 +88,9 @@ export function InventoryLists() {
         >
           <View>
             <ScrollView>
-              {/* {states.filter && <FilterInventoryLists setInventoryLists={reloadByFilter} />} */}
+              {states.filter && (
+                <FilterInventoryLists setInventoryLists={reloadByFilter} />
+              )}
             </ScrollView>
           </View>
         </Modal>
@@ -90,7 +98,7 @@ export function InventoryLists() {
       {isFocused && states.search && (
         <Searchbar
           style={searchbarStyles.container}
-          placeholder={t("searchInventoryListsByName")}
+          placeholder={t("searchByName")}
           onChangeText={setSearchQuery}
           value={searchQuery}
           onClearIconPress={() => {

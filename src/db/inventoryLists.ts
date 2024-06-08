@@ -30,6 +30,19 @@ export const getInventoryListsByName = async (
   return allRows;
 };
 
+export const getInventoryListsByDate = async (
+  isBefore: boolean,
+  date: Date
+) => {
+  const allRows: InventoryList[] = await db.getAllAsync(
+    `SELECT * FROM inventory_list WHERE ${
+      isBefore ? "created_at < ?" : "created_at > ?"
+    };`,
+    [date.toISOString()]
+  );
+  return allRows;
+};
+
 export const updateInventoryList = async (
   inventoryList: InventoryList
 ): Promise<void> => {

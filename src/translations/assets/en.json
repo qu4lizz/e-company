@@ -73,5 +73,6 @@
   "newEmployee": "New Owner",
   "locationRequired": "Lokacija je obavezna",
   "employeeRequired": "Vlasnik je obavezan",
-  "assetName": "Asset Name"
+  "assetName": "Asset Name",
+  "filterInventoryLists": "Filter Inventory Lists"
 }
