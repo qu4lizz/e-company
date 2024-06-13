@@ -74,5 +74,6 @@
   "locationRequired": "Lokacija je obavezna",
   "employeeRequired": "Vlasnik je obavezan",
   "assetName": "Asset Name",
-  "filterInventoryLists": "Filter Inventory Lists"
+  "filterInventoryLists": "Filter Inventory Lists",
+  "editInventoryList": "Edit Inventory List"
 }

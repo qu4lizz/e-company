@@ -2,18 +2,16 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../components/Main";
 import { useTranslation } from "react-i18next";
 import { TextInput, useTheme, Text, Button } from "react-native-paper";
-import { useAppDispatch } from "../reducers/store";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { createInventoryList, updateInventoryList } from "../db/inventoryLists";
+import {
+  createInventoryList,
+  getInventoryListById,
+  updateInventoryList,
+} from "../db/inventoryLists";
 import { useEffect, useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
-import {
-  buttonStyles,
-  cameraStyles,
-  createNewStyles,
-  singleItemStyles,
-} from "../styles/styles";
+import { buttonStyles, cameraStyles, createNewStyles } from "../styles/styles";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Select } from "../components/Select";
 import { AssetWithLocationAndEmployee } from "../types/Asset";
@@ -21,15 +19,17 @@ import { Location } from "../types/Location";
 import {
   getAssetByBarcode,
   getAssetsWithLocationAndEmployee,
+  updateAssetEmployee,
+  updateAssetLocation,
 } from "../db/assets";
-import { getLocations } from "../db/locations";
-import { getEmployees } from "../db/employee";
 import { Employee } from "../types/Employee";
 import { BarcodeScanner } from "../components/BarcodeScanner";
 import { BarcodeScanningResult, CameraView } from "expo-camera";
 import { InventoryListItem } from "../components/InventoryListItem";
 import { ItemSeparator } from "../components/ItemSeparator";
 import { createInventoryListItem } from "../db/inventoryListItems";
+import { getLocations } from "../db/locations";
+import { getEmployees } from "../db/employee";
 
 type CreateNewInventoryList = RouteProp<
   RootStackParamList,
@@ -43,9 +43,7 @@ export function CreateNewInventoryList() {
 
   const { t } = useTranslation(["home"]);
   const theme = useTheme();
-  const dispatch = useAppDispatch();
 
-  const editing = inventoryList ? true : false;
   const [adding, setAdding] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -55,7 +53,17 @@ export function CreateNewInventoryList() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
 
+  // edit
+  const editing = inventoryList ? true : false;
+  const [inventoryListFetched, setInventoryListFetched] = useState<any>();
+  const [inventoryListPassed, setInventoryListPassed] =
+    useState<any>(inventoryList);
+
   useEffect(() => {
+    navigation.setOptions({
+      title: editing ? t("editInventoryList") : t("createNewInventoryList"),
+    });
+
     getAssetsWithLocationAndEmployee().then((res) => {
       setAssets(res);
     });
@@ -65,6 +73,12 @@ export function CreateNewInventoryList() {
     getEmployees().then((res) => {
       setEmployees(res);
     });
+
+    if (editing) {
+      getInventoryListById(inventoryList.id).then((res) => {
+        setInventoryListFetched(res);
+      });
+    }
   }, []);
 
   const onSubmit = () => {
@@ -72,12 +86,12 @@ export function CreateNewInventoryList() {
 
     if (editing) {
       updateInventoryList({
-        id: inventoryList!.id,
+        id: inventoryListFetched!.id,
         name: form.values.name,
-        created_at: inventoryList!.created_at,
+        created_at: inventoryListFetched!.created_at,
       })
         .then(async () => {
-          reload();
+          onSubmitDone(inventoryListFetched!.id);
         })
         .finally(() => {
           setLoading(false);
@@ -89,24 +103,34 @@ export function CreateNewInventoryList() {
         created_at: new Date().toISOString(),
       })
         .then(async (res) => {
-          reload();
-          form.values.assets.forEach((a: any) => {
-            const obj = {
-              inventory_list_id: res,
-              asset_id: a.asset.id,
-              current_employee_id: a.asset.employee.id,
-              new_employee_id: a.newEmployee?.id,
-              current_location_id: a.asset.location.id,
-              new_location_id: a.newLocation?.id,
-            };
-            createInventoryListItem(obj);
-          });
+          onSubmitDone(res);
         })
         .finally(() => {
           setLoading(false);
           navigation.goBack();
         });
     }
+  };
+
+  const onSubmitDone = (id: any) => {
+    reload();
+    form.values.assets.forEach((a: any) => {
+      const obj = {
+        inventory_list_id: id,
+        asset_id: a.asset.id,
+        current_employee_id: a.asset.employee.id,
+        new_employee_id: a.newEmployee?.id,
+        current_location_id: a.asset.location.id,
+        new_location_id: a.newLocation?.id,
+      };
+      createInventoryListItem(obj);
+      if (obj.current_employee_id !== obj.new_employee_id) {
+        updateAssetEmployee(a.asset.id, obj.new_employee_id);
+      }
+      if (obj.current_location_id !== obj.new_location_id) {
+        updateAssetLocation(a.asset.id, obj.new_location_id);
+      }
+    });
   };
 
   const form = useFormik({
@@ -140,16 +164,26 @@ export function CreateNewInventoryList() {
 
   const onBarcodeScanned = async (data: BarcodeScanningResult) => {
     const asset = await getAssetByBarcode(data.data);
-    const completeAsset = assets.find((a) => a.id === asset.id);
+    const completeAsset = assets.find((a: any) => a.id === asset.id);
     itemForm.setFieldValue("asset", completeAsset);
     setIsScanning(false);
   };
 
-  const onDelete = (assetName: string) => {
+  const onDelete = (assetName: string, existing: boolean = false) => {
     form.setFieldValue(
       "assets",
-      form.values.assets.filter((a: any) => a.name !== assetName)
+      form.values.assets.filter((a: any) => a.asset.name !== assetName)
     );
+    if (existing) {
+      setInventoryListPassed({
+        ...inventoryListPassed,
+        assets: inventoryListPassed.assets.filter(
+          (a: any) => a.asset.name !== assetName
+        ),
+      });
+    }
+
+    reload();
   };
 
   return (
@@ -172,7 +206,8 @@ export function CreateNewInventoryList() {
           renderItem={({ item }: any) => (
             <InventoryListItem
               inventoryListItem={item}
-              onDelete={() => onDelete(item.name)}
+              onDelete={() => onDelete(item.asset.name)}
+              isEditing={true}
             />
           )}
           ItemSeparatorComponent={ItemSeparator}
@@ -188,7 +223,7 @@ export function CreateNewInventoryList() {
                   error={form.touched.name && Boolean(form.errors.name)}
                 />
                 {form.touched.name && form.errors.name && (
-                  <Text>{form.errors.name}</Text>
+                  <Text>{form.errors.name as string}</Text>
                 )}
               </View>
               <View style={createNewStyles.container2}>
@@ -305,6 +340,20 @@ export function CreateNewInventoryList() {
                   </Pressable>
                 )}
               </View>
+              {inventoryListPassed && (
+                <FlatList
+                  style={{ width: "100%", flex: 1 }}
+                  data={inventoryListPassed.assets}
+                  renderItem={({ item: any }) => (
+                    <InventoryListItem
+                      inventoryListItemFormatted={item}
+                      onDelete={() => onDelete(item.asset.name, true)}
+                      isEditing={true}
+                    />
+                  )}
+                  ItemSeparatorComponent={ItemSeparator}
+                />
+              )}
             </View>
           }
           ListFooterComponent={

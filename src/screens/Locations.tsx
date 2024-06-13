@@ -37,8 +37,12 @@ export function Locations() {
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    if (!isFocused) {
+      setSearchQuery("");
+      setFilterQuery("");
+    }
     reload();
-  }, [searchQuery, filterQuery]);
+  }, [searchQuery, filterQuery, isFocused]);
 
   const reload = () => {
     if (searchQuery.length > 0) {

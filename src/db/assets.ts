@@ -128,6 +128,26 @@ export const updateAsset = async (asset: Asset): Promise<void> => {
   );
 };
 
+export const updateAssetEmployee = async (
+  assetId: number,
+  employeeId: number
+): Promise<void> => {
+  await db.runAsync("UPDATE asset SET employee_id = ? WHERE id = ?;", [
+    employeeId,
+    assetId,
+  ]);
+};
+
+export const updateAssetLocation = async (
+  assetId: number,
+  locationId: number
+): Promise<void> => {
+  await db.runAsync("UPDATE asset SET location_id = ? WHERE id = ?;", [
+    locationId,
+    assetId,
+  ]);
+};
+
 export const deleteAsset = async (id: number): Promise<void> => {
   await db.runAsync("DELETE FROM asset WHERE id = ?;", [id]);
 };

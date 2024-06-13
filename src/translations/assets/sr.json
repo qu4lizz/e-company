@@ -74,5 +74,6 @@
   "locationRequired": "Lokacija je obavezna",
   "employeeRequired": "Vlasnik je obavezan",
   "assetName": "Naziv sredstva",
-  "filterInventoryLists": "Filter popisnih liste"
+  "filterInventoryLists": "Filter popisnih liste",
+  "editInventoryList": "Izmijeni popisnu listu"
 }

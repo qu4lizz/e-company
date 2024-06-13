@@ -7,7 +7,6 @@ import {
 } from "@react-navigation/native";
 import { FlatList, Pressable, ScrollView, View } from "react-native";
 import { RootStackParamList } from "../components/Main";
-import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { InventoryListDetails as InventoryListDetailsType } from "../types/InventoryList";
 import { getInventoryListById } from "../db/inventoryLists";
@@ -26,8 +25,6 @@ import { formatDate } from "../utils/utils";
 import { InventoryListItem } from "../components/InventoryListItem";
 import { ItemSeparator } from "../components/ItemSeparator";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { getInventoryListItems } from "../db/inventoryListItems";
-import { getLocations } from "../db/locations";
 
 type InventoryDetailsProps = RouteProp<
   RootStackParamList,
@@ -36,7 +33,7 @@ type InventoryDetailsProps = RouteProp<
 
 type InventoryListProps = StackNavigationProp<
   RootStackParamList,
-  "InventoryListDetails"
+  "CreateNewInventoryList"
 >;
 
 export function InventoryListDetails() {
@@ -47,7 +44,6 @@ export function InventoryListDetails() {
   const [inventoryList, setInventoryList] =
     useState<InventoryListDetailsType>();
 
-  const { t } = useTranslation(["home"]);
   const theme = useTheme();
   const isFocused = useIsFocused();
 
@@ -61,11 +57,15 @@ export function InventoryListDetails() {
     }
   }, [isFocused, inventoryListId]);
 
-  const onEdit = () => {};
+  const onEdit = () => {
+    navigation.navigate("CreateNewInventoryList", {
+      reload,
+      inventoryList,
+    });
+  };
 
   const onDeleteDetails = () => {
     onDelete();
-    navigation.goBack();
   };
 
   return (
@@ -93,6 +93,7 @@ export function InventoryListDetails() {
           <InventoryListItem
             onDelete={() => setDelete(true)}
             inventoryListItemFormatted={item}
+            isEditing={false}
           />
         )}
         ItemSeparatorComponent={ItemSeparator}

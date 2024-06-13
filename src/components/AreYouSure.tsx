@@ -33,7 +33,7 @@ export function AreYouSure({ onDelete, onCancel }: Props) {
     <View style={styles.container}>
       <Text variant="titleLarge">{t("areYouSure")}</Text>
       <View style={styles.buttonContainer}>
-        <Button mode="contained" onPress={onCancel}>
+        <Button mode="outlined" onPress={onCancel}>
           {t("cancel")}
         </Button>
         <Button

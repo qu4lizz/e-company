@@ -1,28 +1,39 @@
-import { View } from "react-native";
-import { modalStyles, singleItemStyles } from "../styles/styles";
+import { Pressable, ScrollView, View } from "react-native";
+import { iconSize, modalStyles, singleItemStyles } from "../styles/styles";
 import { Modal, Portal, useTheme } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
 import { AreYouSure } from "./AreYouSure";
 import { Text } from "react-native-paper";
 import { InventoryListItemDetails } from "../types/InventoryListItem";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { deleteInventoryListItem } from "../db/inventoryListItems";
 
 interface Props {
   inventoryListItem?: any;
   onDelete: any;
   inventoryListItemFormatted?: InventoryListItemDetails;
+  isEditing?: boolean;
 }
 
 export function InventoryListItem({
   inventoryListItem,
   onDelete,
   inventoryListItemFormatted,
+  isEditing,
 }: Props) {
   const theme = useTheme();
   const { t } = useTranslation(["home"]);
 
   const [isDeleting, setDelete] = useState(false);
+
+  const deleteItem = () => {
+    const id = inventoryListItem?.id || inventoryListItemFormatted?.id;
+    deleteInventoryListItem(id).then(() => {
+      setDelete(false);
+      onDelete();
+    });
+  };
 
   return (
     <View
@@ -43,7 +54,7 @@ export function InventoryListItem({
           <View>
             <ScrollView>
               <AreYouSure
-                onDelete={onDelete}
+                onDelete={deleteItem}
                 onCancel={() => setDelete(false)}
               />
             </ScrollView>
@@ -92,6 +103,21 @@ export function InventoryListItem({
           </Text>
         </Text>
       </View>
+      {isEditing && (
+        <Pressable
+          style={[
+            { borderColor: theme.colors.primary },
+            singleItemStyles.icons,
+          ]}
+          onPress={() => setDelete(true)}
+        >
+          <MaterialCommunityIcons
+            name="trash-can-outline"
+            size={iconSize}
+            color={theme.colors.primary}
+          />
+        </Pressable>
+      )}
     </View>
   );
 }

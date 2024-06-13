@@ -41,7 +41,7 @@ export type RootStackParamList = {
   };
   CreateNewInventoryList: {
     reload: () => void;
-    inventoryList?: InventoryList;
+    inventoryList?: any;
   };
   InventoryListDetails: {
     inventoryListId: number;

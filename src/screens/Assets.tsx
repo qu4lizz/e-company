@@ -36,8 +36,11 @@ export function Assets() {
   const isFocused = useIsFocused();
 
   useEffect(() => {
+    if (!isFocused) {
+      setSearchQuery("");
+    }
     reload();
-  }, [searchQuery]);
+  }, [searchQuery, isFocused]);
 
   const reload = () => {
     if (searchQuery.length > 0) {

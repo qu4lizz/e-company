@@ -27,9 +27,7 @@ export function InventoryList({ inventoryList, reload }: Props) {
   const { t } = useTranslation(["home"]);
 
   const onDelete = () => {
-    deleteInventoryList(inventoryList.id!).then(() => {
-      reload();
-    });
+    reload();
   };
 
   return (
