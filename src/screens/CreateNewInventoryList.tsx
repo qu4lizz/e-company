@@ -344,7 +344,7 @@ export function CreateNewInventoryList() {
                 <FlatList
                   style={{ width: "100%", flex: 1 }}
                   data={inventoryListPassed.assets}
-                  renderItem={({ item: any }) => (
+                  renderItem={({ item }: any) => (
                     <InventoryListItem
                       inventoryListItemFormatted={item}
                       onDelete={() => onDelete(item.asset.name, true)}
